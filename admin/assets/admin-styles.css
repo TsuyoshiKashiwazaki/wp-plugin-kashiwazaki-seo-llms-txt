@@ -1,0 +1,91 @@
+/* admin/assets/admin-styles.css */
+.kashiwazaki-seo-llmstxt-wrap h1 { margin-bottom: 5px; }
+.kashiwazaki-seo-version-info { font-size: 0.9em; color: #777; margin-top: 0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+.kashiwazaki-seo-llmstxt-wrap .notice { margin-top: 0; margin-bottom: 20px; }
+.llms-section { background-color: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 20px; margin-bottom: 25px; border-radius: 4px; }
+.llms-section h2, .llms-section h3 { margin-top: 0; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; font-weight: 600; color: #2c3338; }
+.llms-section h2 { font-size: 1.4em; }
+.llms-section h3 { font-size: 1.2em; }
+.llms-section h3.settings-subheader { font-size: 1.1em; margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: none; border-top: 1px dashed #eee; padding-top: 15px; font-weight: normal; color: #555; }
+.llms-section h3.yaml-settings-header { margin-top: 15px; border-top: none; padding-top: 0; }
+.llms-section p.description { color: #50575e; font-size: 13px; margin-bottom: 10px; margin-top: 3px; }
+.settings-section .form-table { margin-top: 0; }
+.settings-section .form-table th { width: 220px; padding: 15px 10px 15px 0; vertical-align: top; }
+.settings-section .form-table td { padding: 10px 0; }
+.settings-section .form-table .small-text { width: 80px; margin-right: 5px; }
+.settings-section fieldset { margin-bottom: 10px; }
+.settings-section fieldset label { display: block; margin-bottom: 8px; font-size: 13px; }
+.settings-section fieldset label.post-type-label { display: inline-block; margin-right: 15px; margin-bottom: 5px; }
+.settings-section fieldset code { font-size: 0.9em; color: #777; background-color: #f0f0f1; padding: 0.1em 0.3em; border-radius: 3px; }
+.settings-section .form-table textarea.code,
+.settings-section .form-table input.code { font-family: monospace; }
+.settings-section .submit { margin-top: 25px; padding-top: 15px; border-top: 1px solid #ddd; }
+.llms-actions-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 25px; }
+.action-section { display: flex; flex-direction: column; }
+.action-section h3 { font-size: 1.1em; }
+/* .action-section .action-buttons are removed */
+.file-info { /* This class is reused for displaying URLs */
+    margin-top: 10px; /* Adjusted margin */
+    padding: 15px;
+    border-top: 1px solid #eee;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #444;
+    background-color: #f8f9fa;
+    border-radius: 3px; /* Uniform border radius */
+}
+.file-info strong { color: #222; display: block; margin-bottom: 3px; }
+.file-info a { word-break: break-all; text-decoration: none; color: #0073aa; }
+.file-info a:hover { text-decoration: underline; color: #00a0d2; }
+/* .file-info.no-file is no longer needed */
+#yaml-settings-form-wrapper > p.description { border-top: none; padding-top: 0; margin-top: 0; }
+#yaml-settings-form-wrapper > table { margin-top: 0; }
+
+/* ファイル生成/削除ボタンのスタイル */
+.file-actions { 
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.file-actions .status-message {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+
+.file-actions .status-indicator {
+    font-weight: 600;
+}
+
+.file-actions .button-group {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.file-actions .button-group .button {
+    min-width: 120px;
+    margin: 0 !important;
+    border-radius: 3px !important;
+    box-sizing: border-box !important;
+    border: 1px solid !important;
+}
+
+.file-actions .button-group .button.button-primary {
+    border-color: #2271b1 !important;
+    background: #2271b1 !important;
+    color: #fff !important;
+}
+
+.file-actions .button-group .button.button-secondary {
+    border-color: #50575e !important;
+    background: #f6f7f7 !important;
+    color: #50575e !important;
+}
+
+.file-actions .button-group .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
