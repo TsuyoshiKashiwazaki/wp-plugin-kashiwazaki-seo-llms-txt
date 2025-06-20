@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-06-20
+
+### Fixed
+- **設定値処理**: 空の設定項目の正しい処理ロジックを実装
+- **デフォルト値**: 適用問題の解決とバックアップ機能強化
+
+### Improved
+- **設定処理**: 設定値処理ロジックの最適化
+- **エラー処理**: より堅牢なエラーハンドリング
+
 ## [1.0.0] - 2025-06-08
 
 ### Added

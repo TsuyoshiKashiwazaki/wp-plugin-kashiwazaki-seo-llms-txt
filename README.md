@@ -3,7 +3,7 @@
 [![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.0-orange.svg)](https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.1-orange.svg)](https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt/releases)
 
 AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版）を動的に生成するWordPressプラグインです。大規模言語モデル（LLM）に対してサイトコンテンツの構造化された情報を提供し、AI学習やクロール設定を細かく制御できます。
 
@@ -119,6 +119,9 @@ rate-limit:
 - **エスケープ処理**: 全出力値を適切にエスケープ
 
 ## 更新履歴
+
+### [1.0.1] - 2025-06-20
+- WordPress Plugin Checkの警告修正、設定値処理改善
 
 ### [1.0.0] - 2025-06-08
 - 初回リリース、llms.txt/llms-full.txt生成機能、投稿タイプ選択、AIクローラー設定
