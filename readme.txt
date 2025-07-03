@@ -4,7 +4,7 @@ Tags: seo, llm, ai, crawler, txt
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,13 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 
 == Changelog ==
 
+= 1.0.2 =
+* **新機能:** 各ファイルの個別有効化/無効化機能
+* **新機能:** ファイルステータス表示機能
+* **改善:** 動的生成方式に変更、常に最新情報を提供
+* **改善:** 無効化時の適切な404エラー処理
+* **UI改善:** 生成/無効化ボタンのデザイン改善
+
 = 1.0.1 =
 * **改善:** 空の設定項目の正しい処理
 * **修正:** デフォルト値適用問題の解決
@@ -105,6 +112,9 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 * 日本語完全対応
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+重要：動的生成方式に変更。物理ファイルは作成されず、リアルタイム生成になります。
 
 = 1.0.1 =
 設定画面の空項目処理が改善されました。設定を再確認してください。

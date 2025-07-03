@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-07-03
+
+### Added
+- **個別ファイル制御**: llms.txt と llms-full.txt の個別有効化/無効化機能
+- **ファイルステータス表示**: 各ファイルの生成状況をリアルタイム表示
+- **動的生成方式**: 物理ファイル保存からリアルタイム生成に変更
+
+### Improved
+- **常に最新情報**: アクセス時に最新のコンテンツ情報を提供
+- **404エラー処理**: 無効化時の適切なエラーレスポンス
+- **UI改善**: 生成/無効化ボタンのデザイン向上
+
+### Changed
+- **ファイル保存方式**: 物理ファイル保存を廃止し、完全動的生成に移行
+
 ## [1.0.1] - 2025-06-20
 
 ### Fixed
@@ -36,6 +51,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **セキュリティ**: 適切な入力値検証とサニタイゼーション
 
 ---
+
+## Migration Notes
+
+### 1.0.1 → 1.0.2
+- **重要**: 物理ファイル保存から動的生成に変更
+- 既存の物理ファイル（もし存在する場合）は手動で削除してください
+- パーマリンク設定の再保存を推奨
+
+### Upgrade Process
+1. プラグインファイルを更新
+2. WordPress管理画面でプラグインを再有効化
+3. パーマリンク設定を再保存（推奨）
+4. 設定画面で新機能を確認・設定
 
 ## Compatibility
 
