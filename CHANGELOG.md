@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-07-09
+
+### Added
+- **キャッシュ機能**: 3時間～永久まで選択可能なキャッシュシステム
+- **キャッシュクリアボタン**: 管理画面から手動でキャッシュをクリア可能
+- **WordPress Transient API**: 効率的なキャッシュ実装
+- **安全なテキスト出力関数**: HTMLエンティティ化を回避しつつセキュリティを確保
+
+### Fixed
+- **Plugin Check (PCP) 完全対応**: WordPress.org審査要件を完全にクリア
+- **AI学習許可設定**: チェックボックス設定が正常に保存・反映されない問題を修正
+- **HTMLエンティティ出力問題**: `&gt;`等が生成テキストに含まれる問題を解決
+- **エスケープ処理**: テキストファイル出力で適切なエスケープ処理を実装
+- **多次元配列サニタイゼーション**: YAML設定の安全な処理を改善
+- **WordPress 6.8対応**: readme.txtのテスト済みバージョンを更新
+- **バージョン整合性**: メインファイルとreadme.txtのバージョン統一
+- **末尾スラッシュ問題**: llms.txtとllms-full.txtアクセス時のWordPress自動リダイレクト（末尾スラッシュ追加）を無効化
+
+### Improved
+- **パフォーマンス向上**: サーバー負荷を大幅に軽減
+- **セキュリティ強化**: 全入出力の適切なサニタイゼーション・エスケープ処理
+- **コードクオリティ**: WordPress標準関数の使用（`wp_strip_all_tags()`等）
+- **エラー処理**: より堅牢な入力値検証とエラーハンドリング
+
+### Technical
+- **キャッシュシステム**: WordPress標準のTransient APIを使用した堅牢な実装
+- **再帰的サニタイゼーション**: 多次元配列の安全な処理関数を実装
+- **WordPress準拠**: `strip_tags()`から`wp_strip_all_tags()`への変更
+- **PHPCS準拠**: 適切なコメントによるコーディング規約対応
+
 ## [1.0.2] - 2025-07-03
 
 ### Added
@@ -53,6 +83,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## Migration Notes
+
+### 1.0.2 → 1.0.3
+- 新しいキャッシュ機能により大幅なパフォーマンス向上
+- 設定画面でキャッシュ期間を選択可能
+- 既存設定は自動的に保持されます
 
 ### 1.0.1 → 1.0.2
 - **重要**: 物理ファイル保存から動的生成に変更
