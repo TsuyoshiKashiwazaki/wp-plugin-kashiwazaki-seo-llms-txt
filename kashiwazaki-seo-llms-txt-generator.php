@@ -3,7 +3,7 @@
  * Plugin Name:  Kashiwazaki SEO LLMs.txt Generator
  * Plugin URI:   https://www.tsuyoshikashiwazaki.jp/
  * Description:  AIクローラー向けに llms.txt (概要版) と llms-full.txt (詳細版) を動的に生成。詳細なAIクローラー向け設定も可能です。
- * Version:      1.0.2
+ * Version:      1.0.3
  * Author:       柏崎剛 (Tsuyoshi Kashiwazaki)
  * Author URI:   https://www.tsuyoshikashiwazaki.jp/
  * License:      GPL-2.0-or-later
