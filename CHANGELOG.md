@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **多次元配列サニタイゼーション**: YAML設定の安全な処理を改善
 - **WordPress 6.8対応**: readme.txtのテスト済みバージョンを更新
 - **バージョン整合性**: メインファイルとreadme.txtのバージョン統一
+- **末尾スラッシュ問題**: llms.txtとllms-full.txtアクセス時のWordPress自動リダイレクト（末尾スラッシュ追加）を無効化
 
 ### Improved
 - **パフォーマンス向上**: サーバー負荷を大幅に軽減

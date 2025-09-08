@@ -291,6 +291,17 @@ function kashiwazaki_seo_llmstxt_add_query_vars( $vars ) {
 function kashiwazaki_seo_llmstxt_setup_rewrite_rules() {
     add_rewrite_rule( '^llms\.txt$', 'index.php?kswz_llms_request_type=summary', 'top' );
     add_rewrite_rule( '^llms-full\.txt$', 'index.php?kswz_llms_request_type=full', 'top' );
+    
+    // WordPressの自動リダイレクト（末尾スラッシュ追加）を無効化
+    add_filter( 'redirect_canonical', 'kashiwazaki_seo_llmstxt_disable_trailing_slash_redirect', 10, 2 );
+}
+
+function kashiwazaki_seo_llmstxt_disable_trailing_slash_redirect( $redirect_url, $requested_url ) {
+    // llms.txt または llms-full.txt へのアクセスの場合はリダイレクトを無効化
+    if ( preg_match( '/\/llms(-full)?\.txt$/i', $requested_url ) ) {
+        return false;
+    }
+    return $redirect_url;
 }
 
 function kashiwazaki_seo_llmstxt_handle_dynamic_output() {
