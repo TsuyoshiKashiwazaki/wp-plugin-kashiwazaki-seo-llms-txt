@@ -1,8 +1,8 @@
 === Kashiwazaki SEO LLMs.txt Generator ===
 Contributors: tsuyoshikashiwazaki
-Tags: seo, llm, ai, crawler, txt, generator, markdown, yaml, sitemap
+Tags: seo, llm, ai, crawler, txt
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.3
 License: GPLv2 or later

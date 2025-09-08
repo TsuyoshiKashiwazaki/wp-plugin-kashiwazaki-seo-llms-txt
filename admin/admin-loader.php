@@ -78,7 +78,7 @@ add_action('init', 'kashiwazaki_seo_llmstxt_register_plugin_links');
 // AJAXハンドラー
 function kashiwazaki_toggle_llms_file_ajax_handler() {
     // nonceチェック
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'kashiwazaki_llms_ajax_nonce')) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'kashiwazaki_llms_ajax_nonce')) {
         wp_die(json_encode([
             'success' => false,
             'data' => ['message' => 'セキュリティチェックに失敗しました。']
@@ -93,8 +93,8 @@ function kashiwazaki_toggle_llms_file_ajax_handler() {
         ]));
     }
 
-    $file_type = isset($_POST['file_type']) ? sanitize_text_field($_POST['file_type']) : '';
-    $action = isset($_POST['toggle_action']) ? sanitize_text_field($_POST['toggle_action']) : '';
+    $file_type = isset($_POST['file_type']) ? sanitize_text_field(wp_unslash($_POST['file_type'])) : '';
+    $action = isset($_POST['toggle_action']) ? sanitize_text_field(wp_unslash($_POST['toggle_action'])) : '';
 
     // ファイルタイプの検証
     $valid_file_types = ['llms-txt', 'llms-full-txt'];
@@ -138,7 +138,7 @@ add_action('wp_ajax_kashiwazaki_toggle_llms_file', 'kashiwazaki_toggle_llms_file
 // キャッシュクリアAJAXハンドラー
 function kashiwazaki_clear_llms_cache_ajax_handler() {
     // nonceチェック
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'kashiwazaki_llms_ajax_nonce')) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'kashiwazaki_llms_ajax_nonce')) {
         wp_die(json_encode([
             'success' => false,
             'data' => ['message' => 'セキュリティチェックに失敗しました。']

@@ -67,9 +67,19 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
 
             $new_enable_yaml_footer = isset($_POST['enable_yaml_header']);
             $new_show_copyright_footer = isset($_POST['show_copyright_footer']);
-            $new_cache_duration = isset($_POST['cache_duration']) ? sanitize_text_field($_POST['cache_duration']) : '0';
+            $new_cache_duration = isset($_POST['cache_duration']) ? sanitize_text_field(wp_unslash($_POST['cache_duration'])) : '0';
 
-            $new_yaml_settings = isset($_POST['yaml_settings']) && is_array($_POST['yaml_settings']) ? $_POST['yaml_settings'] : [];
+            // 多次元配列の再帰的サニタイゼーション関数
+            $sanitize_recursive = function($data) use (&$sanitize_recursive) {
+                if (is_array($data)) {
+                    return array_map($sanitize_recursive, $data);
+                }
+                return sanitize_text_field($data);
+            };
+            
+            $new_yaml_settings = isset($_POST['yaml_settings']) && is_array($_POST['yaml_settings']) 
+                ? $sanitize_recursive(wp_unslash($_POST['yaml_settings'])) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                : [];
             $sanitized_yaml = $default_options['yaml_settings']; // Start with defaults
 
             // License

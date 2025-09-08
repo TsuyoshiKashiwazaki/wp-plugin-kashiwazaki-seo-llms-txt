@@ -3,6 +3,18 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * テキストファイル用の安全な出力関数
+ * HTMLエンティティ化せず、HTMLタグのみ除去
+ */
+function kashiwazaki_safe_text_output( $content ) {
+    // HTMLタグを除去し、改行とスペースは保持
+    $content = wp_strip_all_tags( $content );
+    // 不正な制御文字を除去（タブ、改行、キャリッジリターンは保持）
+    $content = preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $content );
+    return $content;
+}
+
 function kashiwazaki_seo_llmstxt_get_default_options() {
     $site_home_url = home_url('/');
     $default_sitemap_url = $site_home_url . 'sitemap.xml';
@@ -182,7 +194,7 @@ function kashiwazaki_seo_generate_llms_content( $full = false ) {
 
         $args = [
             'post_type' => $post_type, 'post_status' => 'publish', 'posts_per_page' => $posts_per_page_per_type,
-            'orderby' => 'date', 'order' => 'DESC', 'suppress_filters' => true, 'ignore_sticky_posts' => true, 'no_found_rows'  => true,
+            'orderby' => 'date', 'order' => 'DESC', 'ignore_sticky_posts' => true, 'no_found_rows'  => true,
         ];
         $posts_query = new WP_Query( $args );
 
@@ -325,7 +337,8 @@ function kashiwazaki_seo_llmstxt_handle_dynamic_output() {
                 header('X-Kashiwazaki-Cache: HIT'); // キャッシュヒットを示すヘッダー
                 nocache_headers();
 
-                echo $content_with_bom;
+                // テキストファイル出力のためHTMLエンティティ化は不要、タグ除去済み
+                echo wp_strip_all_tags( $content_with_bom ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 exit;
             }
         }
@@ -352,7 +365,8 @@ function kashiwazaki_seo_llmstxt_handle_dynamic_output() {
         header('X-Kashiwazaki-Cache: MISS'); // キャッシュミスを示すヘッダー
         nocache_headers();
 
-        echo $content_with_bom;
+        // テキストファイル出力のためHTMLエンティティ化は不要、タグ除去済み
+        echo wp_strip_all_tags( $content_with_bom ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         exit;
     }
 }

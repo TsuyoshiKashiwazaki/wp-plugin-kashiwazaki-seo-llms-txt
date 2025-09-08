@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:  Kashiwazaki SEO LLMs.txt Generator
- * Plugin URI:   https://www.tsuyoshikashiwazaki.jp/
+ * Plugin URI:   https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt
  * Description:  AIクローラー向けに llms.txt (概要版) と llms-full.txt (詳細版) を動的に生成。詳細なAIクローラー向け設定も可能です。
  * Version:      1.0.3
  * Author:       柏崎剛 (Tsuyoshi Kashiwazaki)
- * Author URI:   https://www.tsuyoshikashiwazaki.jp/
+ * Author URI:   https://www.tsuyoshikashiwazaki.jp/profile/
  * License:      GPL-2.0-or-later
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', function() {
         define( 'KASHIWAZAKI_SEO_LLMSTXT_PLUGIN_FILE', __FILE__ );
     }
     if ( ! defined( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION' ) ) {
-        define( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION', '1.0.2' );
+        define( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION', '1.0.3' );
     }
 
     // コアファンクションを読み込む
@@ -102,7 +102,14 @@ add_action( 'plugins_loaded', function() {
         ) . "\n";
 
         if ( ! empty( $output ) ) {
-            echo "\n" . $output;
+            echo "\n" . wp_kses( $output, array(
+                'link' => array(
+                    'rel' => array(),
+                    'type' => array(),
+                    'title' => array(),
+                    'href' => array()
+                )
+            ) );
         }
     }, 99 );
 

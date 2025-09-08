@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <p class="kashiwazaki-seo-version-info">バージョン <?php echo esc_html($plugin_version); ?></p>
     <?php endif; ?>
 
-    <?php if (isset($message)) echo $message; ?>
+    <?php if (isset($message)) echo wp_kses_post( $message ); ?>
 
     <form method="post">
         <?php wp_nonce_field( $save_nonce_action, $save_nonce_name ); ?>
@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     $checked = in_array( $type, $current_selected_types, true ) ? 'checked' : '';
                                 ?>
                                     <label class="post-type-label">
-                                        <input type="checkbox" name="post_types[]" value="<?php echo esc_attr( $type ); ?>" <?php echo $checked; ?> />
+                                        <input type="checkbox" name="post_types[]" value="<?php echo esc_attr( $type ); ?>" <?php echo esc_attr( $checked ); ?> />
                                         <?php echo esc_html( $type_label ); ?> (<code><?php echo esc_html($type); ?></code>)
                                     </label>
                                 <?php endforeach; ?>
