@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2025-10-07
+
+### Fixed
+- **YAML形式のAI標準準拠**: wait-seconds、クォート付きステータスコード、allowed-botsの配列形式に対応
+- **設定値の重複問題**: 設定値のマージロジックを書き直し、重複問題を解決
+- **すべての設定をリセット**: デフォルトに戻すボタンがすべての設定値を正しくリセット
+- **YAMLドキュメント区切り**: 著作権セクション前のドキュメント区切りを削除
+
+### Changed
+- **レート制限のデフォルト**: 無効化に変更（enabled: false）
+- **レート制限のデフォルト値**: 5 req/sec、300 req/min に変更（従来は2/120）
+- **許可ボットリスト**: 実在する9種類のボットのみに限定
+
+### Added
+- **レート制限切り替え**: チェックボックスと折りたたみ可能な詳細セクション
+- **リトライポリシー切り替え**: 折りたたみ可能な詳細セクション
+- **許可ボット設定フィールド**: アクセスを許可するAIボットの設定
+
+### Improved
+- **UI改善**: 表示/非表示セクションによる使いやすさの向上
+- **設定処理の堅牢性**: 個別フィールド割り当てによる処理の改善
+
 ## [1.0.3] - 2025-07-09
 
 ### Added
