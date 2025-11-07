@@ -309,7 +309,10 @@ function kashiwazaki_seo_generate_llms_content( $full = false ) {
 }
 
 function kashiwazaki_seo_llmstxt_add_query_vars( $vars ) {
-    $vars[] = 'kswz_llms_request_type';
+    // クエリバーが既に登録されていない場合のみ追加
+    if ( ! in_array( 'kswz_llms_request_type', $vars ) ) {
+        $vars[] = 'kswz_llms_request_type';
+    }
     return $vars;
 }
 
@@ -333,6 +336,16 @@ function kashiwazaki_seo_llmstxt_handle_dynamic_output() {
     global $wp_query;
 
     $request_type = get_query_var( 'kswz_llms_request_type' );
+
+    // クエリバーが取得できない場合は、REQUEST_URIを直接チェック
+    if ( empty( $request_type ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+        $request_uri = $_SERVER['REQUEST_URI'];
+        if ( preg_match( '/^\/llms\.txt$/i', $request_uri ) ) {
+            $request_type = 'summary';
+        } elseif ( preg_match( '/^\/llms-full\.txt$/i', $request_uri ) ) {
+            $request_type = 'full';
+        }
+    }
 
     if ( $request_type ) {
         $is_full = ( $request_type === 'full' );

@@ -3,7 +3,7 @@
 [![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.4-orange.svg)](https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.5-orange.svg)](https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt/releases)
 
 AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版）を動的に生成するWordPressプラグインです。大規模言語モデル（LLM）に対してサイトコンテンツの構造化された情報を提供し、AI学習やクロール設定を細かく制御できます。
 
@@ -119,6 +119,11 @@ rate-limit:
 - **エスケープ処理**: 全出力値を適切にエスケープ
 
 ## 更新履歴
+
+### [1.0.5] - 2025-11-07
+- **修正**: クエリバー登録問題の修正（クエリバーが正しく登録されていない環境でもllms.txtが生成されるようにREQUEST_URIの直接チェック機能を追加）
+- **改善**: フォールバック処理の強化（llms.txtおよびllms-full.txtへのアクセス時のフォールバック処理を改善）
+- **変更**: リクエスト判定ロジックの変更（WordPressのクエリバーに依存せず、REQUEST_URIを直接チェックする方式に変更）
 
 ### [1.0.4] - 2025-10-07
 - **修正**: YAML形式をAIクローラー標準に準拠（wait-seconds、クォート付きステータスコード、allowed-botsの配列形式）
