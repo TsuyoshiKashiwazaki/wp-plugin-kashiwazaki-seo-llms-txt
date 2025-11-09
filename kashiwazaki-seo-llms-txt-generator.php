@@ -3,7 +3,7 @@
  * Plugin Name:  Kashiwazaki SEO LLMs.txt Generator
  * Plugin URI:   https://github.com/TsuyoshiKashiwazaki/wp-plugin-kashiwazaki-seo-llms-txt
  * Description:  AIクローラー向けに llms.txt (概要版) と llms-full.txt (詳細版) を動的に生成。詳細なAIクローラー向け設定も可能です。
- * Version:      1.0.5
+ * Version:      1.0.6
  * Author:       柏崎剛 (Tsuyoshi Kashiwazaki)
  * Author URI:   https://www.tsuyoshikashiwazaki.jp/profile/
  * License:      GPL-2.0-or-later
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', function() {
         define( 'KASHIWAZAKI_SEO_LLMSTXT_PLUGIN_FILE', __FILE__ );
     }
     if ( ! defined( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION' ) ) {
-        define( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION', '1.0.5' );
+        define( 'KASHIWAZAKI_SEO_LLMSTXT_VERSION', '1.0.6' );
     }
 
     // コアファンクションを読み込む
@@ -118,10 +118,10 @@ add_action( 'plugins_loaded', function() {
         add_action( 'init', 'kashiwazaki_seo_llmstxt_setup_rewrite_rules' );
     }
     if ( function_exists( 'kashiwazaki_seo_llmstxt_add_query_vars' ) ) {
-        add_filter( 'query_vars', 'kashiwazaki_seo_llmstxt_add_query_vars' );
+        add_filter( 'query_vars', 'kashiwazaki_seo_llmstxt_add_query_vars', 1 );
     }
     if ( function_exists( 'kashiwazaki_seo_llmstxt_handle_dynamic_output' ) ) {
-        add_action( 'template_redirect', 'kashiwazaki_seo_llmstxt_handle_dynamic_output' );
+        add_action( 'template_redirect', 'kashiwazaki_seo_llmstxt_handle_dynamic_output', 1 );
     }
     
 }, 0 ); // 優先度0で最初に実行

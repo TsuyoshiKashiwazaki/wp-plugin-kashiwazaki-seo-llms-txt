@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2025-11-09
+
+### Fixed
+- **他プラグインとの競合**: 他のWordPressプラグインとの優先度競合により `/llms.txt` が404エラーになる問題を修正
+
+### Improved
+- **フィルター/アクション優先度**: `query_vars` フィルターと `template_redirect` アクションの優先度を1に変更し、他プラグインより先に実行
+- **REQUEST_URI解析**: `parse_url()` を使用した堅牢なパス判定を実装
+
 ## [1.0.5] - 2025-11-07
 
 ### Fixed

@@ -339,10 +339,10 @@ function kashiwazaki_seo_llmstxt_handle_dynamic_output() {
 
     // クエリバーが取得できない場合は、REQUEST_URIを直接チェック
     if ( empty( $request_type ) && isset( $_SERVER['REQUEST_URI'] ) ) {
-        $request_uri = $_SERVER['REQUEST_URI'];
-        if ( preg_match( '/^\/llms\.txt$/i', $request_uri ) ) {
+        $request_uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+        if ( preg_match( '/\/llms\.txt$/i', $request_uri ) ) {
             $request_type = 'summary';
-        } elseif ( preg_match( '/^\/llms-full\.txt$/i', $request_uri ) ) {
+        } elseif ( preg_match( '/\/llms-full\.txt$/i', $request_uri ) ) {
             $request_type = 'full';
         }
     }
