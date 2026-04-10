@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インストール・初期設定 - Kashiwazaki SEO LLMs.txt Generator マニュアル</title>
+    <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body>
+<button class="hamburger-btn" aria-label="メニュー">&#9776;</button>
+
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h2 style="color:#fff;">LLMs.txt Generator</h2>
+        <span class="version">v1.0.6</span>
+        <img src="images/main-visual.png" alt="" style="width:100%;border-radius:4px;margin-top:8px;">
+    </div>
+    <ul>
+        <li><a href="index.html">概要</a></li>
+        <li class="active"><a href="setup.html">インストール・初期設定</a></li>
+        <li><a href="llms-settings.html">詳細設定</a></li>
+        <li><a href="troubleshooting.html">トラブルシューティング</a></li>
+    </ul>
+</nav>
+
+<main class="content">
+    <h1>インストール・初期設定</h1>
+    <p class="lead">Kashiwazaki SEO LLMs.txt Generator のインストール方法と、llms.txt生成に必要な基本設定を説明します。</p>
+
+    <h2>インストール手順</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <div class="step-body">
+            <p>WordPress管理画面から <strong>プラグイン &gt; 新規追加</strong> に移動し、「Kashiwazaki SEO LLMs.txt Generator」を検索します。または、プラグインのZIPファイルを <strong>プラグイン &gt; 新規追加 &gt; プラグインのアップロード</strong> からアップロードします。</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <div class="step-body">
+            <p>「今すぐインストール」をクリックし、インストール完了後「有効化」をクリックします。</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <div class="step-body">
+            <p>管理画面の左メニューに「Kashiwazaki SEO LLMs.txt Generator」が追加されます。クリックして設定画面を開きます。</p>
+        </div>
+    </div>
+
+    <figure class="screenshot">
+        <img src="images/screenshots/00-menu-location.png" alt="管理画面メニューの位置" class="lightbox-trigger">
+        <figcaption>管理画面の左メニューにプラグインが追加されます</figcaption>
+    </figure>
+
+    <div class="callout callout-tip">
+        <div class="callout-title">ヒント</div>
+        <p>有効化時にリライトルールが自動登録され、<code>/llms.txt</code> と <code>/llms-full.txt</code> のエンドポイントが利用可能になります。</p>
+    </div>
+
+    <h2>リライトルールの確認</h2>
+
+    <p>プラグインの有効化後、以下のURLでllms.txtが正しく出力されることを確認してください。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">エンドポイント</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>/llms.txt</code></td>
+                <td>概要版のllms.txt。サイトの基本情報と主要コンテンツの概要を出力します。</td>
+            </tr>
+            <tr>
+                <td><code>/llms-full.txt</code></td>
+                <td>詳細版のllms-full.txt。全コンテンツの詳細情報を含むフル版を出力します。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">注意</div>
+        <p>エンドポイントにアクセスして404エラーが表示される場合は、WordPress管理画面の <strong>設定 &gt; パーマリンク</strong> を開いて「変更を保存」をクリックしてください。リライトルールが再生成されます。</p>
+    </div>
+
+    <h2>基本設定</h2>
+
+    <h3>サイト情報</h3>
+    <p>llms.txtに出力されるサイトの基本情報を設定します。サイト名と説明は、AIクローラーがサイトの目的を理解するための重要な情報です。</p>
+
+    <h3>投稿タイプの選択</h3>
+    <p>llms.txtに含める投稿タイプを選択します。デフォルトでは投稿（post）と固定ページ（page）が含まれます。カスタム投稿タイプがある場合は、必要に応じて追加できます。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">投稿タイプ</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>投稿（post）</td>
+                <td>ブログ記事やニュース記事。デフォルトで含有されます。</td>
+            </tr>
+            <tr>
+                <td>固定ページ（page）</td>
+                <td>固定的なコンテンツページ。デフォルトで含有されます。</td>
+            </tr>
+            <tr>
+                <td>カスタム投稿タイプ</td>
+                <td>テーマやプラグインで登録されたカスタム投稿タイプ。個別に含有・除外を設定可能。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>link rel="alternate" メタタグ</h3>
+    <p>本プラグインは、HTMLの <code>&lt;head&gt;</code> 内に以下のような <code>&lt;link rel="alternate"&gt;</code> メタタグを自動出力します。</p>
+
+    <pre><code>&lt;link rel="alternate" type="text/plain" href="https://example.com/llms.txt"&gt;
+&lt;link rel="alternate" type="text/plain" href="https://example.com/llms-full.txt"&gt;</code></pre>
+
+    <p>このメタタグにより、検索エンジンやAIクローラーがllms.txtの存在を自動的に検出できます。</p>
+
+    <div class="callout callout-note">
+        <div class="callout-title">補足</div>
+        <p>メタタグの出力には、テーマの <code>header.php</code> に <code>&lt;?php wp_head(); ?&gt;</code> が記述されている必要があります。</p>
+    </div>
+
+    <nav class="page-nav">
+        <a href="index.html" class="prev">&laquo; 概要</a>
+        <a href="llms-settings.html" class="next">詳細設定 &raquo;</a>
+    </nav>
+
+    <footer class="manual-footer">
+        <p>作者: <a href="https://www.tsuyoshikashiwazaki.jp/profile/" target="_blank" rel="noopener">柏崎剛（Tsuyoshi Kashiwazaki）</a></p>
+        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.0.6</p>
+    </footer>
+</main>
+
+<div class="lightbox"></div>
+<script src="js/manual.js?v=1"></script>
+</body>
+</html>

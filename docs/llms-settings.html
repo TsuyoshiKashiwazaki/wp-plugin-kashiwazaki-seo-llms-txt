@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>詳細設定 - Kashiwazaki SEO LLMs.txt Generator マニュアル</title>
+    <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body>
+<button class="hamburger-btn" aria-label="メニュー">&#9776;</button>
+
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h2 style="color:#fff;">LLMs.txt Generator</h2>
+        <span class="version">v1.0.6</span>
+        <img src="images/main-visual.png" alt="" style="width:100%;border-radius:4px;margin-top:8px;">
+    </div>
+    <ul>
+        <li><a href="index.html">概要</a></li>
+        <li><a href="setup.html">インストール・初期設定</a></li>
+        <li class="active"><a href="llms-settings.html">詳細設定</a></li>
+        <li><a href="troubleshooting.html">トラブルシューティング</a></li>
+    </ul>
+</nav>
+
+<main class="content">
+    <h1>詳細設定</h1>
+    <p class="lead">YAMLヘッダー、レート制限、許可ボットリスト、コンテンツ含有設定など、Kashiwazaki SEO LLMs.txt Generator の詳細な設定項目を解説します。</p>
+
+    <h2>YAMLヘッダー設定</h2>
+
+    <p>llms.txt のYAMLヘッダー（フロントマター）には、AIクローラー向けのメタデータを記述します。これらの設定により、AIクローラーがサイトの利用条件やアクセスポリシーを機械的に読み取れるようになります。</p>
+
+    <figure class="screenshot">
+        <img src="images/screenshots/02-llmstxt-detail.png" alt="LLMs.txt設定" class="lightbox-trigger">
+        <figcaption>LLMs.txt生成の詳細設定</figcaption>
+    </figure>
+
+    <h3>ライセンス設定</h3>
+    <p>コンテンツのライセンス情報を設定します。AIクローラーに対して、コンテンツの利用条件を明示します。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">設定項目</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ライセンスタイプ</td>
+                <td>コンテンツに適用するライセンスの種類（例: CC-BY-4.0、All Rights Reserved など）を指定します。</td>
+            </tr>
+            <tr>
+                <td>ライセンスURL</td>
+                <td>ライセンスの詳細が記載されたURLを指定します。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>レート制限設定</h3>
+    <p>AIクローラーのリクエスト頻度を制御するためのレート制限を設定します。サーバーへの過剰な負荷を防止しつつ、適切なクローリングを許可します。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">設定項目</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>リクエスト上限</td>
+                <td>指定期間内に許可するリクエストの最大数を設定します。</td>
+            </tr>
+            <tr>
+                <td>期間（秒）</td>
+                <td>レート制限の適用期間を秒単位で設定します。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">注意</div>
+        <p>レート制限値を極端に低く設定すると、AIクローラーがコンテンツを正常に取得できなくなる場合があります。サーバーのスペックに応じた適切な値を設定してください。</p>
+    </div>
+
+    <h3>リトライポリシー設定</h3>
+    <p>AIクローラーがリクエストに失敗した場合のリトライ動作を指示します。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">設定項目</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>最大リトライ回数</td>
+                <td>リクエスト失敗時の最大リトライ回数を指定します。</td>
+            </tr>
+            <tr>
+                <td>リトライ間隔（秒）</td>
+                <td>リトライ間の待機時間を秒単位で指定します。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>許可ボットリスト</h2>
+
+    <p>llms.txt へのアクセスを許可するAIクローラー（ボット）を個別に指定できます。リストに含まれないボットはコンテンツへのアクセスが制限されます。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">設定項目</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>許可ボット名</td>
+                <td>アクセスを許可するAIクローラーのUser-Agent名を指定します（例: GPTBot、Anthropic-AI、Google-Extended など）。</td>
+            </tr>
+            <tr>
+                <td>ボットリスト管理</td>
+                <td>ボットの追加・削除をAJAXで動的に行えます。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+        <div class="callout-title">ヒント</div>
+        <p>主要なAIクローラーのUser-Agent名: <code>GPTBot</code>（OpenAI）、<code>anthropic-ai</code>（Anthropic）、<code>Google-Extended</code>（Google）、<code>CCBot</code>（Common Crawl）、<code>PerplexityBot</code>（Perplexity）などがあります。</p>
+    </div>
+
+    <h2>コンテンツ含有設定</h2>
+
+    <p>llms.txt に含めるコンテンツを投稿タイプごとに細かく制御できます。</p>
+
+    <h3>投稿タイプ別の設定</h3>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <div class="step-body">
+            <p>設定画面の「コンテンツ含有設定」セクションで、llms.txt に含める投稿タイプのチェックボックスをオンにします。</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <div class="step-body">
+            <p>llms.txt（概要版）に含めるコンテンツと、llms-full.txt（詳細版）に含めるコンテンツをそれぞれ設定できます。</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <div class="step-body">
+            <p>「設定を保存」ボタンをクリックして変更を反映します。AJAXによる非同期保存で、ページ遷移なしに設定が保存されます。</p>
+        </div>
+    </div>
+
+    <h2>キャッシュ管理</h2>
+
+    <p>生成されたllms.txtの内容はキャッシュされ、毎回の動的生成による負荷を軽減します。コンテンツを更新した際は、キャッシュをクリアして最新の状態を反映できます。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">項目</th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>キャッシュクリア</td>
+                <td>設定画面の「キャッシュクリア」ボタンでllms.txtのキャッシュを即座に削除できます。</td>
+            </tr>
+            <tr>
+                <td>自動更新</td>
+                <td>投稿の公開・更新時にキャッシュが自動的にクリアされます。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-note">
+        <div class="callout-title">補足</div>
+        <p>設定変更はすべてAJAXで処理されるため、ページを離れることなく即座に反映されます。3つのAJAXハンドラーが設定保存、キャッシュクリア、ボットリスト管理を担当します。</p>
+    </div>
+
+    <nav class="page-nav">
+        <a href="setup.html" class="prev">&laquo; インストール・初期設定</a>
+        <a href="troubleshooting.html" class="next">トラブルシューティング &raquo;</a>
+    </nav>
+
+    <footer class="manual-footer">
+        <p>作者: <a href="https://www.tsuyoshikashiwazaki.jp/profile/" target="_blank" rel="noopener">柏崎剛（Tsuyoshi Kashiwazaki）</a></p>
+        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.0.6</p>
+    </footer>
+</main>
+
+<div class="lightbox"></div>
+<script src="js/manual.js?v=1"></script>
+</body>
+</html>
