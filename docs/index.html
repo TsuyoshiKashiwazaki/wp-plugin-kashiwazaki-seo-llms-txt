@@ -12,7 +12,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <h2 style="color:#fff;">LLMs.txt Generator</h2>
-        <span class="version">v1.0.6</span>
+        <span class="version">v1.1.0</span>
         <img src="images/main-visual.png" alt="" style="width:100%;border-radius:4px;margin-top:8px;">
     </div>
     <ul>
@@ -54,13 +54,17 @@
 
     <ul>
         <li>llms.txt（概要版）と llms-full.txt（詳細版）を動的に生成</li>
+        <li>管理画面は 5 タブ構成（ダッシュボード / コンテンツ設定 / 運営者情報 / AI クローラー設定 / 高度な設定）<strong>※v1.1.0 で再編</strong></li>
+        <li>運営者情報（E-E-A-T）ブロックを生成ファイル冒頭に出力 — 運営者・編集責任者・専門領域・編集方針を AI に伝達 <strong>※v1.1.0 新機能</strong></li>
+        <li>概要版 1 行要約：llms.txt の各リンク行に投稿の抜粋から自動生成した要約を付与（任意）<strong>※v1.1.0 新機能</strong></li>
+        <li>HTTP Conditional GET（RFC 7232：ETag / Last-Modified / 304）対応で AI クローラーの帯域を大幅削減 <strong>※v1.1.0 新機能</strong></li>
         <li>YAMLヘッダーでライセンス、レート制限、リトライポリシーを設定可能</li>
-        <li>許可ボットリストによるAIサービスごとのアクセス制御</li>
+        <li>許可ボットリストによる AI サービスごとのアクセス制御（プリセットボタン 10 種付属）</li>
         <li>リライトルールにより <code>/llms.txt</code> と <code>/llms-full.txt</code> のエンドポイントを自動生成</li>
-        <li>3つのAJAXハンドラーによる管理画面からの設定操作</li>
+        <li>3 つの AJAX ハンドラーによる管理画面からの設定操作（ファイル ON/OFF / キャッシュクリア / リセット）</li>
         <li><code>&lt;link rel="alternate"&gt;</code> メタタグをHTMLヘッドに自動出力</li>
-        <li>投稿タイプごとにllms.txtへの含有・除外を設定可能</li>
-        <li>管理画面1ページで全設定を一元管理</li>
+        <li>投稿タイプごとに llms.txt への含有・除外を設定可能（メディア attachment 対応）</li>
+        <li>Sticky save bar、未保存変更警告、Help タブで操作性を強化</li>
     </ul>
 
     <figure class="infographic">
@@ -148,7 +152,7 @@
 
     <footer class="manual-footer">
         <p>作者: <a href="https://www.tsuyoshikashiwazaki.jp/profile/" target="_blank" rel="noopener">柏崎剛（Tsuyoshi Kashiwazaki）</a></p>
-        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.0.6</p>
+        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.1.0</p>
     </footer>
 </main>
 

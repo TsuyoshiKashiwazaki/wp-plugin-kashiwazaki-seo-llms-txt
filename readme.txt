@@ -4,7 +4,7 @@ Tags: seo, llm, ai, crawler, txt
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,37 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 
 == Changelog ==
 
+= 1.1.0 =
+* **新機能:** 管理画面を 5 タブ構成に再編 (ダッシュボード / コンテンツ設定 / 運営者情報 / AI クローラー設定 / 高度な設定)
+* **新機能:** ダッシュボードに生成状態バッジ・キャッシュ残時間・プレビュー URL を表示
+* **新機能:** 運営者情報 (E-E-A-T) ブロックを生成ファイル冒頭に出力 (運営者・編集責任者・専門領域・編集方針)
+* **新機能:** 概要版 1 行要約 (任意): llms.txt の各リンク行に投稿の抜粋を付与可能
+* **新機能:** HTTP Conditional GET (RFC 7232 準拠、ETag / Last-Modified / 304 対応)
+* **新機能:** YAML フッター詳細を 3 つの details グループ (ライセンス / リトライ / 許可ボット) に分割
+* **新機能:** textarea プリセット挿入ボタン (主要 AI ボット 10 種・除外パス 6 種)
+* **新機能:** Sticky save bar + 未保存変更警告 + Help タブ (WP_Screen) で用語集・トラブルシュート・出力サンプル提供
+* **新機能:** Danger Zone と「理解した」チェックボックスによる二段階確認 (リセット操作)
+* **修正:** attachment 投稿タイプの post_status='inherit' 対応 (UI で選択しても出力されなかった不整合を解消)
+* **修正:** posts_per_page を 1〜10000 で clamp (POST save + runtime read 全 3 箇所)
+* **修正:** site_name / site_desc に Markdown 構造文字正規化を追加
+* **修正:** disabled endpoint で他プラグインの output buffer を破壊する不具合
+* **修正:** Conditional GET の ETag/body 同期問題 (RFC 7232 違反解消)、HEAD/GET Content-Length 一致、二重 BOM 解消
+* **修正:** AJAX レスポンス Content-Type を `application/json` に統一 (wp_send_json_*)
+* **修正:** URL 検証を `wp_http_validate_url()` に置換 (IDN ドメイン・multibyte path 対応)
+* **修正:** リトライしないステータスコード検証を `preg_match` に変更 (`5e2` 等の弾き)
+* **改善:** アクセシビリティ (ARIA tablist/tab/tabpanel、Arrow キーナビ、aria-describedby)、狭幅 782px 対応
+* **改善:** uninstall 完全化、register_activation_hook の closure 外配置、アセットバージョニング (filemtime)
+
+= 1.0.6 =
+* **修正:** 他プラグインとの優先度競合により `/llms.txt` が 404 になる問題を修正
+* **改善:** `query_vars` フィルターと `template_redirect` アクションの優先度を 1 に変更
+* **改善:** REQUEST_URI 解析を `parse_url()` ベースの堅牢な実装に変更
+
+= 1.0.5 =
+* **修正:** クエリバー登録問題に対する REQUEST_URI 直接チェックフォールバック
+* **修正:** llms.txt / llms-full.txt アクセス時のフォールバック処理を強化
+* **変更:** WordPress クエリバー非依存のリクエスト判定方式に変更
+
 = 1.0.4 =
 * **修正:** YAML形式をAIクローラー標準に準拠（wait-seconds、クォート付きステータスコード、allowed-botsの配列形式）
 * **修正:** 設定値の重複問題を解決
@@ -130,6 +161,15 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 * 日本語完全対応
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+管理画面が 5 タブ構成に再編されました。E-E-A-T ブロック・概要版要約・Conditional GET 等の新機能を追加し、12 件のバグ・セキュリティ修正を適用。アクセシビリティとレスポンシブも大幅改善。POST 互換性は 100% 維持されているため設定値は引き継がれます。
+
+= 1.0.6 =
+他プラグインとの優先度競合により llms.txt が 404 になる問題を修正しました。
+
+= 1.0.5 =
+クエリバー登録問題のフォールバックを追加。llms.txt 生成の安定性が向上しました。
 
 = 1.0.4 =
 YAML形式がAIクローラー標準に準拠し、設定値の重複問題を解決しました。レート制限とリトライポリシーの切り替えUIを追加。

@@ -20,6 +20,14 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
     $options['enable_yaml_header'] = isset($saved_options['enable_yaml_header']) ? (bool)$saved_options['enable_yaml_header'] : $default_options['enable_yaml_header'];
     $options['show_copyright_footer'] = isset($saved_options['show_copyright_footer']) ? (bool)$saved_options['show_copyright_footer'] : $default_options['show_copyright_footer'];
     $options['cache_duration'] = isset($saved_options['cache_duration']) ? (string)$saved_options['cache_duration'] : '0';
+    // A-2: 概要版オプション
+    $options['summary_inline_excerpt'] = isset($saved_options['summary_inline_excerpt']) ? (bool)$saved_options['summary_inline_excerpt'] : $default_options['summary_inline_excerpt'];
+    $options['summary_excerpt_length'] = isset($saved_options['summary_excerpt_length']) ? max(20, min(200, intval($saved_options['summary_excerpt_length']))) : $default_options['summary_excerpt_length'];
+    // A-1: E-E-A-T オプション
+    $options['enable_eeat_block'] = isset($saved_options['enable_eeat_block']) ? (bool)$saved_options['enable_eeat_block'] : $default_options['enable_eeat_block'];
+    $options['eeat_settings'] = isset($saved_options['eeat_settings']) && is_array($saved_options['eeat_settings'])
+        ? wp_parse_args($saved_options['eeat_settings'], $default_options['eeat_settings'])
+        : $default_options['eeat_settings'];
 
     // yaml_settingsの処理（重複を避けるため個別にマージ）
     if (isset($saved_options['yaml_settings'])) {
@@ -73,12 +81,6 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
     $saved_selected_types = $options['selected_types'];
     $enable_yaml_footer = $options['enable_yaml_header'];
     $yaml_settings = $options['yaml_settings'];
-
-    // デバッグ: allowed-botsの状態を確認
-    if (isset($_GET['debug']) && $_GET['debug'] === 'yaml') {
-        error_log('DEBUG yaml_settings allowed-bots: ' . print_r($yaml_settings['allowed-bots'] ?? 'NOT SET', true));
-        error_log('DEBUG yaml_settings disallow: ' . print_r($yaml_settings['disallow'] ?? 'NOT SET', true));
-    }
     $show_copyright_footer = $options['show_copyright_footer'];
     $cache_duration = $options['cache_duration'];
 
@@ -86,7 +88,9 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
     $save_nonce_name = 'kashiwazaki_seo_llmstxt_nonce_field';
 
     if ( isset( $_POST['save_settings'] ) && check_admin_referer( $save_nonce_action, $save_nonce_name ) ) {
-        $new_posts_per_page = isset( $_POST['posts_per_page'] ) && is_numeric( $_POST['posts_per_page'] ) && $_POST['posts_per_page'] > 0 ? intval( $_POST['posts_per_page'] ) : $default_options['posts_per_page'];
+        $new_posts_per_page = isset( $_POST['posts_per_page'] ) && is_numeric( $_POST['posts_per_page'] ) && $_POST['posts_per_page'] > 0
+            ? max( 1, min( 10000, intval( $_POST['posts_per_page'] ) ) )
+            : $default_options['posts_per_page'];
         $new_selected_types_input = isset( $_POST['post_types'] ) && is_array( $_POST['post_types'] ) ? array_map( 'sanitize_key', $_POST['post_types'] ) : array();
 
         if ( empty( $new_selected_types_input ) ) {
@@ -130,9 +134,16 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
             $sanitized_yaml['retry-policy']['max-retries'] = isset($new_yaml_settings['retry-policy']['max-retries']) && is_numeric($new_yaml_settings['retry-policy']['max-retries']) && $new_yaml_settings['retry-policy']['max-retries'] >= 0 ? intval($new_yaml_settings['retry-policy']['max-retries']) : $default_options['yaml_settings']['retry-policy']['max-retries'];
             $sanitized_yaml['retry-policy']['wait-seconds'] = isset($new_yaml_settings['retry-policy']['wait-seconds']) && is_numeric($new_yaml_settings['retry-policy']['wait-seconds']) && $new_yaml_settings['retry-policy']['wait-seconds'] >= 0 ? intval($new_yaml_settings['retry-policy']['wait-seconds']) : (isset($new_yaml_settings['retry-policy']['retry-after-seconds']) && is_numeric($new_yaml_settings['retry-policy']['retry-after-seconds']) ? intval($new_yaml_settings['retry-policy']['retry-after-seconds']) : $default_options['yaml_settings']['retry-policy']['wait-seconds']);
             
-            if (isset($new_yaml_settings['retry-policy']['status-codes-no-retry']) && trim($new_yaml_settings['retry-policy']['status-codes-no-retry']) !== '') {
+            // F16 (audit-impl-r2): is_string ガードで配列 POST に対する trim/explode TypeError を防止
+            if (isset($new_yaml_settings['retry-policy']['status-codes-no-retry'])
+                && is_string($new_yaml_settings['retry-policy']['status-codes-no-retry'])
+                && trim($new_yaml_settings['retry-policy']['status-codes-no-retry']) !== '') {
                 $codes = explode(',', $new_yaml_settings['retry-policy']['status-codes-no-retry']);
-                $sanitized_yaml['retry-policy']['status-codes-no-retry'] = array_values(array_filter(array_map(function($code) { $trimmed_code = trim($code); return is_numeric($trimmed_code) && $trimmed_code >= 100 && $trimmed_code < 600 ? (string)$trimmed_code : null; }, $codes)));
+                // F16 (audit-r4): is_numeric は '5e2' '0xFF' を通すため preg_match で 3 桁 100-599 のみ許可
+                $sanitized_yaml['retry-policy']['status-codes-no-retry'] = array_values(array_filter(array_map(function($code) {
+                    $trimmed_code = trim( (string) $code );
+                    return preg_match( '/^[1-5]\d{2}$/', $trimmed_code ) ? $trimmed_code : null;
+                }, $codes)));
             } else {
                 $sanitized_yaml['retry-policy']['status-codes-no-retry'] = [];
             }
@@ -173,6 +184,46 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
             $sanitized_yaml['sitemap'] = isset($new_yaml_settings['sitemap']) ? esc_url_raw(trim($new_yaml_settings['sitemap'])) : '';
              if (empty($sanitized_yaml['sitemap'])) { $sanitized_yaml['sitemap'] = $default_options['yaml_settings']['sitemap']; }
 
+            // A-2: 概要版オプション
+            $new_summary_inline_excerpt = isset($_POST['summary_inline_excerpt']);
+            $new_summary_excerpt_length = isset($_POST['summary_excerpt_length']) && is_numeric($_POST['summary_excerpt_length'])
+                ? max(20, min(200, intval($_POST['summary_excerpt_length'])))
+                : $default_options['summary_excerpt_length'];
+
+            // A-1: E-E-A-T オプション
+            $new_enable_eeat_block = isset($_POST['enable_eeat_block']);
+            $eeat_input = isset($_POST['eeat_settings']) && is_array($_POST['eeat_settings'])
+                ? wp_unslash($_POST['eeat_settings'])
+                : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+            $sanitized_eeat = [
+                'organization_name'    => isset($eeat_input['organization_name'])    ? sanitize_text_field( $eeat_input['organization_name'] ) : '',
+                'organization_url'     => isset($eeat_input['organization_url'])     ? esc_url_raw( trim( $eeat_input['organization_url'] ) ) : '',
+                'organization_address' => isset($eeat_input['organization_address']) ? sanitize_text_field( $eeat_input['organization_address'] ) : '',
+                'organization_phone'   => isset($eeat_input['organization_phone'])   ? preg_replace( '/[^0-9+\-() ]/', '', $eeat_input['organization_phone'] ) : '',
+                'organization_email'   => '',
+                'representative_name'  => isset($eeat_input['representative_name'])  ? sanitize_text_field( $eeat_input['representative_name'] ) : '',
+                'representative_title' => isset($eeat_input['representative_title']) ? sanitize_text_field( $eeat_input['representative_title'] ) : '',
+                'expertise_areas'      => isset($eeat_input['expertise_areas'])      ? sanitize_textarea_field( $eeat_input['expertise_areas'] ) : '',
+                'credentials'          => isset($eeat_input['credentials'])          ? sanitize_textarea_field( $eeat_input['credentials'] ) : '',
+                'editorial_policy_url' => isset($eeat_input['editorial_policy_url']) ? esc_url_raw( trim( $eeat_input['editorial_policy_url'] ) ) : '',
+                'editorial_policy_text'=> '',
+            ];
+
+            // email: sanitize_email + is_email
+            if ( isset( $eeat_input['organization_email'] ) ) {
+                $email_raw = sanitize_email( $eeat_input['organization_email'] );
+                $sanitized_eeat['organization_email'] = is_email( $email_raw ) ? $email_raw : '';
+            }
+
+            // editorial_policy_text: 文字数 200 で truncate (mb_strlen ガード + mb_substr)
+            if ( isset( $eeat_input['editorial_policy_text'] ) ) {
+                $text_raw = sanitize_textarea_field( $eeat_input['editorial_policy_text'] );
+                $sanitized_eeat['editorial_policy_text'] = mb_strlen( $text_raw, 'UTF-8' ) > 200
+                    ? mb_substr( $text_raw, 0, 200, 'UTF-8' )
+                    : $text_raw;
+            }
+
             $new_options_to_save = [
                 'posts_per_page' => $new_posts_per_page,
                 'selected_types' => $new_selected_types,
@@ -180,6 +231,10 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
                 'yaml_settings'  => $sanitized_yaml,
                 'show_copyright_footer' => $new_show_copyright_footer,
                 'cache_duration' => $new_cache_duration,
+                'summary_inline_excerpt' => $new_summary_inline_excerpt,
+                'summary_excerpt_length' => $new_summary_excerpt_length,
+                'enable_eeat_block' => $new_enable_eeat_block,
+                'eeat_settings' => $sanitized_eeat,
             ];
             update_option( KASHIWAZAKI_SEO_LLMSTXT_OPTION_KEY, $new_options_to_save );
 

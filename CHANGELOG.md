@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-05-08
+
+### Added (新機能)
+- **管理画面の 5 タブ構成**: ダッシュボード / コンテンツ設定 / 運営者情報 / AI クローラー設定 / 高度な設定 にタブ分割し、設定項目の発見性を改善
+- **ダッシュボードタブ**: llms.txt / llms-full.txt の生成状態バッジ、キャッシュ残時間、プレビュー URL、概要版/詳細版の差を一画面で確認可能
+- **運営者情報 (E-E-A-T) ブロック**: `## About` セクションを生成ファイル冒頭に出力し、運営者・編集責任者・専門領域・編集方針を AI に伝達
+- **概要版 1 行要約 (任意)**: llms.txt の各リンク行に投稿の抜粋から自動生成した 1 行要約を付与可能
+- **HTTP Conditional GET (RFC 7232)**: ETag (weak) / Last-Modified / 304 Not Modified に対応、AI クローラーの帯域削減
+- **YAML フッター詳細をグループ分割**: ライセンス / リトライ / 許可ボット の 3 つの details グループで段階的に展開
+- **textarea プリセット挿入**: 主要 AI ボット 10 種・除外パス 6 種のプリセットボタンを追加
+- **Sticky save bar**: ページ下部固定の保存ボタンと未保存変更警告
+- **Help タブ (WP_Screen)**: 概要 / 用語集 / トラブルシュート / 出力サンプルを管理画面右上から提供
+- **Danger Zone**: 「すべての設定をデフォルトに戻す」を専用タブに隔離、「理解した」チェックボックスで二段階確認
+
+### Changed (変更)
+- **タブ間の保存統合**: 全タブの設定を 1 つの form で管理、保存ボタン 1 回で全項目を反映 (POST 互換性 100% 維持)
+- **投稿タイプ選択 UI**: 3 列 CSS Grid + チェック済み視覚フィードバック
+- **AJAX 通知の一元化**: WP 標準 admin-notice + aria-live region に統合
+- **キャッシュクリアボタン**: cache_duration=0 でも常時 enabled (旧 transient が残っている可能性に対応)
+
+### Fixed (修正)
+- **attachment 投稿タイプ**: WP_Query が `post_status='publish'` 固定だったため UI で attachment を選択しても出力されなかった不整合を修正 (`post_status='inherit'` も許可)
+- **「すべての設定をデフォルトに戻す」**: 別 option の `kashiwazaki_llms_txt_enabled` / `_full` も初期値 true に戻すように修正
+- **posts_per_page 上限**: POST save + runtime read 全 3 箇所で 1〜10000 で clamp し、巨大値による DoS を防止
+- **Markdown 構造汚染**: site_name / site_desc に Markdown 構造文字 (`[]()` 改行 等) があった場合の正規化を追加 (post title と同じ処理)
+- **PHP 8.1+ deprecation**: `trim($code)` で int を渡す deprecation を解消 (`trim((string) $code)`)
+- **disabled endpoint の buffer 破壊**: 無効化された llms.txt / llms-full.txt の 404 path で他プラグインの output buffer を破壊する不具合を修正
+- **plugin action link**: `admin_url()` 出力を `esc_url()` でエスケープ
+- **Conditional GET の ETag/body 同期**: 配信 body と ETag/Content-Length 計算対象の bytes ミスマッチを修正 (RFC 7232 違反解消)
+- **HEAD/GET Content-Length 整合**: HEAD と GET で Content-Length が一致するように修正
+- **二重 BOM 解消**: 旧プラグインから移行した環境で発生していた二重 BOM を単一 BOM に修正
+- **AJAX レスポンス Content-Type**: `wp_die(json_encode(...))` を `wp_send_json_success/error()` に置換し、正しい `application/json` を出力
+- **filter_var(URL) IDN 拒否**: URL 検証を `wp_http_validate_url()` に置換し IDN ドメイン・multibyte path を許容
+- **status-codes-no-retry 検証**: `is_numeric` を `preg_match('/^[1-5]\d{2}$/')` に変更 (`5e2`、`0xFF` 等の弾き)
+- **アクティベーションフック**: `register_activation_hook` をクロージャ外に移動し、初回アクティベーションでデフォルト option 作成・rewrite flush が実行されないバグを修正
+
+### Improved (改善)
+- **アセットバージョニング**: `time()` から `filemtime()` に変更し、ファイル変更時のみキャッシュバスター値が変わるように
+- **アクセシビリティ (a11y)**: tablist/tab/tabpanel ARIA 属性、`tabindex='0'` 付与、Arrow/Home/End キーナビ、`aria-describedby` の関連付け
+- **狭幅レスポンシブ**: 782px 未満で form-table を 1 カラム化、ダッシュボードグリッドを縦並びに
+- **plugin header 完備**: Text Domain / Domain Path / Requires at least: 6.0 / Requires PHP: 7.4 を追加
+- **uninstall 完全化**: lastmod marker option と wildcard transient (kashiwazaki_llms_lastmod_v2_*) を削除対象に追加
+- **alternate link 出力**: endpoint 個別 enabled チェック後にのみ `<link rel="alternate">` を出力
+
 ## [1.0.6] - 2025-11-09
 
 ### Fixed

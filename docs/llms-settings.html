@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>詳細設定 - Kashiwazaki SEO LLMs.txt Generator マニュアル</title>
-    <link rel="stylesheet" href="css/style.css?v=1">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
 <button class="hamburger-btn" aria-label="メニュー">&#9776;</button>
@@ -12,7 +12,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <h2 style="color:#fff;">LLMs.txt Generator</h2>
-        <span class="version">v1.0.6</span>
+        <span class="version">v1.1.0</span>
         <img src="images/main-visual.png" alt="" style="width:100%;border-radius:4px;margin-top:8px;">
     </div>
     <ul>
@@ -24,171 +24,215 @@
 </nav>
 
 <main class="content">
-    <h1>詳細設定</h1>
-    <p class="lead">YAMLヘッダー、レート制限、許可ボットリスト、コンテンツ含有設定など、Kashiwazaki SEO LLMs.txt Generator の詳細な設定項目を解説します。</p>
+    <h1>詳細設定（5 タブ構成）</h1>
+    <p class="lead">v1.1.0 から管理画面は <strong>5 つのタブ</strong>に再編されました。各タブは独立した設定エリアですが、すべて 1 つの form で管理されており、どこで編集しても下部の「設定を保存」ボタン 1 回ですべて反映されます。</p>
 
-    <h2>YAMLヘッダー設定</h2>
+    <h2>タブ構成の全体像</h2>
 
-    <p>llms.txt のYAMLヘッダー（フロントマター）には、AIクローラー向けのメタデータを記述します。これらの設定により、AIクローラーがサイトの利用条件やアクセスポリシーを機械的に読み取れるようになります。</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:24%;">タブ</th>
+                <th>主な内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>ダッシュボード</strong></td>
+                <td>llms.txt / llms-full.txt の生成状態バッジ、キャッシュ残時間、プレビュー URL、概要版/詳細版の差説明</td>
+            </tr>
+            <tr>
+                <td><strong>コンテンツ設定</strong></td>
+                <td>llms.txt に何を含めるか（投稿タイプ、件数、概要版 1 行要約、制作者情報フッター）</td>
+            </tr>
+            <tr>
+                <td><strong>運営者情報</strong></td>
+                <td>E-E-A-T ブロック（運営者・編集責任者・専門領域・編集方針 等を <code>## About</code> として出力）</td>
+            </tr>
+            <tr>
+                <td><strong>AI クローラー設定</strong></td>
+                <td>YAML フッター（ライセンス・アクセス頻度・リトライ・除外パス・許可ボット・サイトマップ）</td>
+            </tr>
+            <tr>
+                <td><strong>高度な設定</strong></td>
+                <td>キャッシュ TTL、すべての設定をデフォルトに戻す（Danger Zone）</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>1. ダッシュボードタブ</h2>
+
+    <p>このサイトの <code>llms.txt</code> / <code>llms-full.txt</code> の生成状況を一目で確認できます。各ファイルの ON/OFF はカードのボタンから即座に切り替え可能です。</p>
 
     <figure class="screenshot">
-        <img src="images/screenshots/02-llmstxt-detail.png" alt="LLMs.txt設定" class="lightbox-trigger">
-        <figcaption>LLMs.txt生成の詳細設定</figcaption>
+        <img src="images/screenshots/03-tab-dashboard.png" alt="ダッシュボードタブ" class="lightbox-trigger">
+        <figcaption>ダッシュボードタブ — 生成状態バッジ + プレビュー URL + キャッシュ状態</figcaption>
     </figure>
 
-    <h3>ライセンス設定</h3>
-    <p>コンテンツのライセンス情報を設定します。AIクローラーに対して、コンテンツの利用条件を明示します。</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width:35%;">設定項目</th>
-                <th>説明</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>ライセンスタイプ</td>
-                <td>コンテンツに適用するライセンスの種類（例: CC-BY-4.0、All Rights Reserved など）を指定します。</td>
-            </tr>
-            <tr>
-                <td>ライセンスURL</td>
-                <td>ライセンスの詳細が記載されたURLを指定します。</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h3>レート制限設定</h3>
-    <p>AIクローラーのリクエスト頻度を制御するためのレート制限を設定します。サーバーへの過剰な負荷を防止しつつ、適切なクローリングを許可します。</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width:35%;">設定項目</th>
-                <th>説明</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>リクエスト上限</td>
-                <td>指定期間内に許可するリクエストの最大数を設定します。</td>
-            </tr>
-            <tr>
-                <td>期間（秒）</td>
-                <td>レート制限の適用期間を秒単位で設定します。</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="callout callout-warning">
-        <div class="callout-title">注意</div>
-        <p>レート制限値を極端に低く設定すると、AIクローラーがコンテンツを正常に取得できなくなる場合があります。サーバーのスペックに応じた適切な値を設定してください。</p>
-    </div>
-
-    <h3>リトライポリシー設定</h3>
-    <p>AIクローラーがリクエストに失敗した場合のリトライ動作を指示します。</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width:35%;">設定項目</th>
-                <th>説明</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>最大リトライ回数</td>
-                <td>リクエスト失敗時の最大リトライ回数を指定します。</td>
-            </tr>
-            <tr>
-                <td>リトライ間隔（秒）</td>
-                <td>リトライ間の待機時間を秒単位で指定します。</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>許可ボットリスト</h2>
-
-    <p>llms.txt へのアクセスを許可するAIクローラー（ボット）を個別に指定できます。リストに含まれないボットはコンテンツへのアクセスが制限されます。</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width:35%;">設定項目</th>
-                <th>説明</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>許可ボット名</td>
-                <td>アクセスを許可するAIクローラーのUser-Agent名を指定します（例: GPTBot、Anthropic-AI、Google-Extended など）。</td>
-            </tr>
-            <tr>
-                <td>ボットリスト管理</td>
-                <td>ボットの追加・削除をAJAXで動的に行えます。</td>
-            </tr>
-        </tbody>
-    </table>
-
     <div class="callout callout-tip">
-        <div class="callout-title">ヒント</div>
-        <p>主要なAIクローラーのUser-Agent名: <code>GPTBot</code>（OpenAI）、<code>anthropic-ai</code>（Anthropic）、<code>Google-Extended</code>（Google）、<code>CCBot</code>（Common Crawl）、<code>PerplexityBot</code>（Perplexity）などがあります。</p>
+        <div class="callout-title">使いどころ</div>
+        <p>「llms.txt が動作しているか確認したい」「キャッシュをすぐクリアしたい」といった日常運用はこのタブで完結します。</p>
     </div>
 
-    <h2>コンテンツ含有設定</h2>
+    <h2>2. コンテンツ設定タブ</h2>
 
-    <p>llms.txt に含めるコンテンツを投稿タイプごとに細かく制御できます。</p>
+    <p>生成ファイルに <strong>何を含めるか</strong>を決めるタブです。投稿タイプの選択、最大件数、概要版の 1 行要約、制作者情報の有無を設定します。</p>
 
-    <h3>投稿タイプ別の設定</h3>
+    <figure class="screenshot">
+        <img src="images/screenshots/04-tab-content.png" alt="コンテンツ設定タブ" class="lightbox-trigger">
+        <figcaption>コンテンツ設定タブ — 投稿タイプ 3 列 grid + 概要版 1 行要約 + 制作者情報</figcaption>
+    </figure>
 
-    <div class="step">
-        <span class="step-number">1</span>
-        <div class="step-body">
-            <p>設定画面の「コンテンツ含有設定」セクションで、llms.txt に含める投稿タイプのチェックボックスをオンにします。</p>
-        </div>
-    </div>
-
-    <div class="step">
-        <span class="step-number">2</span>
-        <div class="step-body">
-            <p>llms.txt（概要版）に含めるコンテンツと、llms-full.txt（詳細版）に含めるコンテンツをそれぞれ設定できます。</p>
-        </div>
-    </div>
-
-    <div class="step">
-        <span class="step-number">3</span>
-        <div class="step-body">
-            <p>「設定を保存」ボタンをクリックして変更を反映します。AJAXによる非同期保存で、ページ遷移なしに設定が保存されます。</p>
-        </div>
-    </div>
-
-    <h2>キャッシュ管理</h2>
-
-    <p>生成されたllms.txtの内容はキャッシュされ、毎回の動的生成による負荷を軽減します。コンテンツを更新した際は、キャッシュをクリアして最新の状態を反映できます。</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width:35%;">項目</th>
-                <th>詳細</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>キャッシュクリア</td>
-                <td>設定画面の「キャッシュクリア」ボタンでllms.txtのキャッシュを即座に削除できます。</td>
-            </tr>
-            <tr>
-                <td>自動更新</td>
-                <td>投稿の公開・更新時にキャッシュが自動的にクリアされます。</td>
-            </tr>
-        </tbody>
-    </table>
+    <h3>投稿タイプの選択</h3>
+    <p>含めたい投稿タイプにチェックを入れます。「投稿」「固定ページ」がデフォルトで選択されており、カスタム投稿タイプとメディア（attachment）も選択可能です。</p>
 
     <div class="callout callout-note">
-        <div class="callout-title">補足</div>
-        <p>設定変更はすべてAJAXで処理されるため、ページを離れることなく即座に反映されます。3つのAJAXハンドラーが設定保存、キャッシュクリア、ボットリスト管理を担当します。</p>
+        <div class="callout-title">v1.1.0 修正</div>
+        <p>v1.0.6 まではメディア（attachment）を選択しても出力されないバグがありました。v1.1.0 で <code>post_status='inherit'</code> も対象とするよう修正されています。</p>
     </div>
+
+    <h3>投稿タイプごとの最大件数</h3>
+    <p>各投稿タイプから新しい順で取得する最大件数を指定します。<strong>1〜10000</strong>の範囲で、デフォルトは 1000 件です。多すぎるとファイルが肥大化し AI クローラーの読み込み時間に影響します。</p>
+
+    <h3>概要版 1 行要約（任意）</h3>
+    <p>有効にすると、<code>llms.txt</code> の各リンク行の末尾に投稿の抜粋から自動生成した 1 行要約が <code>: </code> 区切りで付与されます。</p>
+    <p>出力例：</p>
+    <pre>- [タイトル](URL): 1 行要約</pre>
+
+    <h3>制作者情報フッター</h3>
+    <p>生成ファイルの末尾にプラグイン制作者情報を表示するかどうか。デフォルトは ON です。</p>
+
+    <h2>3. 運営者情報タブ（E-E-A-T）</h2>
+
+    <p>生成ファイルの冒頭に <code>## About</code> ブロックを出力し、運営者・編集責任者・専門領域・編集方針などを AI に伝えます。AI が「誰の知識として引用すべきか」を判断する根拠になり、引用率の向上に効きます。</p>
+
+    <figure class="screenshot">
+        <img src="images/screenshots/05-tab-eeat.png" alt="運営者情報タブ" class="lightbox-trigger">
+        <figcaption>運営者情報タブ — ブロック有効化 + 11 項目の詳細入力</figcaption>
+    </figure>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">公開出力に注意</div>
+        <p>このタブで入力した内容は <code>llms.txt</code> および <code>llms-full.txt</code> として誰でも閲覧可能になります。電話番号・メールアドレスは AI クローラーやスクレイパーから露出するため、公開してよい情報のみ入力してください。</p>
+    </div>
+
+    <h3>入力項目（すべて任意）</h3>
+    <ul>
+        <li>運営者名（個人名 / 屋号 / 法人名 / 団体名）</li>
+        <li>運営者 URL</li>
+        <li>所在地</li>
+        <li>電話番号 ※公開リスクあり</li>
+        <li>E-mail ※公開リスクあり</li>
+        <li>編集責任者名</li>
+        <li>編集責任者の肩書（代表 / 編集長 / 主宰 等）</li>
+        <li>専門領域（改行区切り）</li>
+        <li>資格・認定・経歴（改行区切り）</li>
+        <li>編集方針ページ URL</li>
+        <li>編集方針サマリ（200 文字以内）</li>
+    </ul>
+
+    <p>入力済の項目数は <code>&lt;summary&gt;</code> に「N / 11 項目入力済」と表示され、残り項目を一目で把握できます。</p>
+
+    <h2>4. AI クローラー設定タブ（YAML フッター）</h2>
+
+    <p>AI クローラーへの動作指示を YAML フッターとして生成ファイル末尾に出力します。設定項目は 3 つの details グループに分割されており、必要なグループだけ展開して編集できます。</p>
+
+    <figure class="screenshot">
+        <img src="images/screenshots/06-tab-crawler.png" alt="AI クローラー設定タブ" class="lightbox-trigger">
+        <figcaption>AI クローラー設定タブ — YAML フッター ON + 3 つの details グループ</figcaption>
+    </figure>
+
+    <h3>グループ A — ライセンス / アクセス頻度</h3>
+    <ul>
+        <li><strong>コンテンツライセンス</strong>: AI 学習利用・商用利用の許可</li>
+        <li><strong>アクセス頻度制限</strong>: 秒間・分間リクエスト数の上限</li>
+    </ul>
+
+    <h3>グループ B — リトライ / 除外パス</h3>
+    <ul>
+        <li><strong>エラー時のリトライ</strong>: 最大リトライ回数 / 待機時間 / リトライしない HTTP ステータスコード</li>
+        <li><strong>除外パス</strong>: AI クローラーからアクセスを除外するパス（1 行に 1 つ。<code>/wp-admin/</code> 等）。プリセットボタンで主要なパスを 1 クリック追加できます。</li>
+    </ul>
+
+    <h3>グループ C — 許可ボット / 正規ドメイン / サイトマップ</h3>
+    <ul>
+        <li><strong>許可する AI ボット</strong>: GPTBot / ClaudeBot / PerplexityBot 等。プリセットボタンで主要 10 種を 1 クリック追加可能</li>
+        <li><strong>正規ドメイン</strong>: AI が引用する際の正規 URL</li>
+        <li><strong>サイトマップ URL</strong>: XML サイトマップの場所</li>
+    </ul>
+
+    <div class="callout callout-tip">
+        <div class="callout-title">プリセットボタン（v1.1.0 新機能）</div>
+        <p>許可ボットと除外パスの textarea には主要な値をワンクリックで追加できるプリセットボタンが付いています。GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, anthropic-ai, PerplexityBot, Google-Extended, Applebot-Extended, Bytespider, CCBot などが選択可能です。</p>
+    </div>
+
+    <h2>5. 高度な設定タブ</h2>
+
+    <p>キャッシュ管理と Danger Zone（取り消し不能な操作）が配置されています。</p>
+
+    <figure class="screenshot">
+        <img src="images/screenshots/07-tab-advanced.png" alt="高度な設定タブ" class="lightbox-trigger">
+        <figcaption>高度な設定タブ — キャッシュ TTL + Danger Zone</figcaption>
+    </figure>
+
+    <h3>キャッシュ有効期間</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:35%;">選択肢</th>
+                <th>用途</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>キャッシュなし</td>
+                <td>毎回リアルタイム生成。投稿数が少ない開発・テスト環境向け</td>
+            </tr>
+            <tr>
+                <td>3 時間</td>
+                <td>更新が頻繁なメディアサイト</td>
+            </tr>
+            <tr>
+                <td>24 時間（1 日）<strong>[推奨]</strong></td>
+                <td>一般的な企業・個人サイト</td>
+            </tr>
+            <tr>
+                <td>3 日</td>
+                <td>更新頻度が低いサイト</td>
+            </tr>
+            <tr>
+                <td>1 週間 <strong>[推奨]</strong></td>
+                <td>静的なコーポレートサイト</td>
+            </tr>
+            <tr>
+                <td>永久（手動クリアまで）</td>
+                <td>大規模サイトで明示的にクリアしたい場合のみ</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>キャッシュをクリア</strong>ボタンは TTL=0 でも常時 enabled です（過去に TTL を設定していた transient が残っている可能性があるため）。</p>
+
+    <h3>Danger Zone — すべての設定をデフォルトに戻す</h3>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">取り消し不能</div>
+        <p>このボタンを実行すると、投稿タイプ・YAML フッター・運営者情報・キャッシュ TTL・ファイル ON/OFF など、このプラグインのすべての設定が初期値に戻ります。一度実行すると元に戻せません。</p>
+    </div>
+
+    <p>誤操作防止のため、ボタンは初期状態で無効化されており、「<strong>私はこの操作が取り消せないことを理解しました</strong>」のチェックボックスを ON にして初めて押せるようになります（v1.1.0 で導入された <strong>checkbox_understand_then_button</strong> パターン）。</p>
+
+    <h2>共通機能</h2>
+
+    <h3>Sticky save bar</h3>
+    <p>ページ下部に固定された保存バーから、どのタブからでも 1 クリックで保存できます。未保存の変更があると「⚠ 未保存の変更があります」が表示され、ページを離れようとすると <code>beforeunload</code> 警告が出ます。</p>
+
+    <h3>Help タブ（管理画面右上の「ヘルプ」ボタン）</h3>
+    <p>WordPress 標準の Help タブ機能を使い、概要 / 用語集 / トラブルシュート / 出力サンプル の 4 セクションを提供しています。</p>
+
+    <h3>HTTP Conditional GET（v1.1.0 新機能、admin 不可視）</h3>
+    <p>llms.txt / llms-full.txt は RFC 7232 準拠の Conditional GET (ETag / Last-Modified / 304 Not Modified) に対応しています。AI クローラーがリクエストするたびに完全なコンテンツを再取得する代わりに、変更がなければ 304 を返すため帯域を大幅に削減できます。</p>
 
     <nav class="page-nav">
         <a href="setup.html" class="prev">&laquo; インストール・初期設定</a>
@@ -197,7 +241,7 @@
 
     <footer class="manual-footer">
         <p>作者: <a href="https://www.tsuyoshikashiwazaki.jp/profile/" target="_blank" rel="noopener">柏崎剛（Tsuyoshi Kashiwazaki）</a></p>
-        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.0.6</p>
+        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.1.0</p>
     </footer>
 </main>
 

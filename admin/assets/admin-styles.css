@@ -1,91 +1,180 @@
-/* admin/assets/admin-styles.css */
-.kashiwazaki-seo-llmstxt-wrap h1 { margin-bottom: 5px; }
-.kashiwazaki-seo-version-info { font-size: 0.9em; color: #777; margin-top: 0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
-.kashiwazaki-seo-llmstxt-wrap .notice { margin-top: 0; margin-bottom: 20px; }
-.llms-section { background-color: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 20px; margin-bottom: 25px; border-radius: 4px; }
-.llms-section h2, .llms-section h3 { margin-top: 0; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; font-weight: 600; color: #2c3338; }
-.llms-section h2 { font-size: 1.4em; }
-.llms-section h3 { font-size: 1.2em; }
-.llms-section h3.settings-subheader { font-size: 1.1em; margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: none; border-top: 1px dashed #eee; padding-top: 15px; font-weight: normal; color: #555; }
-.llms-section h3.yaml-settings-header { margin-top: 15px; border-top: none; padding-top: 0; }
-.llms-section p.description { color: #50575e; font-size: 13px; margin-bottom: 10px; margin-top: 3px; }
-.settings-section .form-table { margin-top: 0; }
-.settings-section .form-table th { width: 220px; padding: 15px 10px 15px 0; vertical-align: top; }
-.settings-section .form-table td { padding: 10px 0; }
-.settings-section .form-table .small-text { width: 80px; margin-right: 5px; }
-.settings-section fieldset { margin-bottom: 10px; }
-.settings-section fieldset label { display: block; margin-bottom: 8px; font-size: 13px; }
-.settings-section fieldset label.post-type-label { display: inline-block; margin-right: 15px; margin-bottom: 5px; }
-.settings-section fieldset code { font-size: 0.9em; color: #777; background-color: #f0f0f1; padding: 0.1em 0.3em; border-radius: 3px; }
-.settings-section .form-table textarea.code,
-.settings-section .form-table input.code { font-family: monospace; }
-.settings-section .submit { margin-top: 25px; padding-top: 15px; border-top: 1px solid #ddd; }
-.llms-actions-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 25px; }
-.action-section { display: flex; flex-direction: column; }
-.action-section h3 { font-size: 1.1em; }
-/* .action-section .action-buttons are removed */
-.file-info { /* This class is reused for displaying URLs */
-    margin-top: 10px; /* Adjusted margin */
-    padding: 15px;
-    border-top: 1px solid #eee;
-    font-size: 13px;
-    line-height: 1.6;
-    color: #444;
-    background-color: #f8f9fa;
-    border-radius: 3px; /* Uniform border radius */
-}
-.file-info strong { color: #222; display: block; margin-bottom: 3px; }
-.file-info a { word-break: break-all; text-decoration: none; color: #0073aa; }
-.file-info a:hover { text-decoration: underline; color: #00a0d2; }
-/* .file-info.no-file is no longer needed */
-#yaml-settings-form-wrapper > p.description { border-top: none; padding-top: 0; margin-top: 0; }
-#yaml-settings-form-wrapper > table { margin-top: 0; }
+/* admin/assets/admin-styles.css — UX redesign (3者合意 R4) */
 
-/* ファイル生成/削除ボタンのスタイル */
-.file-actions { 
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-}
+/* === Wrap base === */
+.kashiwazaki-seo-llmstxt-wrap.kw-llms-admin h1 { margin-bottom: 5px; }
+.kashiwazaki-seo-version-info { font-size: 0.9em; color: #777; margin-top: 0; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e2e4e7; }
+.kw-llms-admin .notice { margin-top: 0; margin-bottom: 15px; }
+.kw-llms-admin form { padding-bottom: 80px; /* room for sticky save bar */ }
 
-.file-actions .status-message {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-}
+/* === Tabs === */
+.kw-llms-tabs { margin-bottom: 0; padding-top: 5px; border-bottom: 1px solid #c3c4c7; }
+.kw-llms-tabs .nav-tab { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; padding: 10px 14px; }
+.kw-llms-tabs .nav-tab .dashicons { font-size: 16px; width: 16px; height: 16px; line-height: 1; }
+.kw-llms-tabs .nav-tab:focus { box-shadow: 0 0 0 2px #2271b1; outline: none; }
 
-.file-actions .status-indicator {
-    font-weight: 600;
-}
+.kw-tab-pane { background: #fff; border: 1px solid #c3c4c7; border-top: none; padding: 24px 24px 12px; box-shadow: 0 1px 1px rgba(0,0,0,.04); border-radius: 0 0 4px 4px; }
+.kw-tab-pane[hidden] { display: none; }
+.kw-tab-pane h3.kw-section-h3 { margin-top: 24px; padding-bottom: 8px; border-bottom: 1px solid #e2e4e7; font-size: 1.1em; color: #2c3338; }
+.kw-tab-intro { margin: 0 0 20px; padding: 12px 14px; background: #f6f7f7; border-left: 3px solid #2271b1; border-radius: 0 3px 3px 0; color: #1d2327; line-height: 1.6; }
 
-.file-actions .button-group {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-}
+/* === Form table tweaks === */
+.kw-tab-pane .form-table th { width: 220px; padding: 14px 10px 14px 0; vertical-align: top; font-weight: 600; }
+.kw-tab-pane .form-table td { padding: 10px 0; }
+.kw-tab-pane .form-table .small-text { width: 80px; margin-right: 5px; }
+.kw-tab-pane fieldset label { display: block; margin-bottom: 6px; font-size: 13px; }
+.kw-tab-pane p.description { color: #50575e; font-size: 13px; margin: 4px 0 8px; line-height: 1.5; }
+.kw-tab-pane p.description code { font-size: 12px; background: #f0f0f1; padding: 1px 5px; border-radius: 2px; }
 
-.file-actions .button-group .button {
-    min-width: 120px;
-    margin: 0 !important;
-    border-radius: 3px !important;
-    box-sizing: border-box !important;
-    border: 1px solid !important;
-}
+/* === Dashboard === */
+.kw-dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
 
-.file-actions .button-group .button.button-primary {
-    border-color: #2271b1 !important;
-    background: #2271b1 !important;
+.kw-card { background: #fff; border: 1px solid #dcdcde; border-radius: 6px; padding: 18px 18px 16px; }
+.kw-card-info { background: #f0f6fc; border-color: #c5d9ed; }
+.kw-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+.kw-card-title { margin: 0; font-size: 15px; font-weight: 700; color: #1d2327; }
+.kw-card-desc { margin: 0 0 12px; color: #50575e; font-size: 13px; line-height: 1.5; }
+.kw-card-url { margin: 0 0 12px; font-size: 12px; color: #50575e; }
+.kw-url-label { font-weight: 600; margin-right: 4px; }
+.kw-url-link { word-break: break-all; }
+.kw-card-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.kw-card-actions .button { min-height: 32px; }
+
+/* Status badge */
+.kw-status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; line-height: 1.4; }
+.kw-status-badge.kw-status-on { background: #e6f4ea; color: #1e7d3a; }
+.kw-status-badge.kw-status-off { background: #fce8e6; color: #c5221f; }
+.kw-status-badge::before { content: '●'; font-size: 8px; line-height: 1; }
+
+/* Diff list */
+.kw-diff-list { margin: 8px 0 0; padding-left: 20px; }
+.kw-diff-list li { margin-bottom: 6px; line-height: 1.6; }
+.kw-diff-list code { background: #fff; padding: 1px 5px; border-radius: 2px; font-size: 12px; }
+
+/* === Post type grid === */
+.kw-post-type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 8px; }
+.kw-post-type-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #dcdcde; border-radius: 4px; background: #fff; cursor: pointer; transition: border-color .15s, background-color .15s; }
+.kw-post-type-item:hover { background: #f6f7f7; border-color: #8c8f94; }
+.kw-post-type-item.is-checked { background: #f0f6fc; border-color: #2271b1; }
+.kw-post-type-item input[type="checkbox"] { margin: 0; flex-shrink: 0; }
+.kw-post-type-name { font-size: 13px; font-weight: 500; color: #1d2327; flex: 1; }
+.kw-post-type-slug { font-size: 11px; color: #8c8f94; }
+.kw-post-type-slug code { background: transparent; padding: 0; font-size: 11px; color: #8c8f94; }
+
+/* === E-E-A-T details === */
+.kw-public-warning { margin-bottom: 16px; }
+.kw-public-mark { color: #c5221f; font-weight: 700; }
+
+.kw-eeat-details { border: 1px solid #dcdcde; border-radius: 4px; margin-bottom: 16px; }
+.kw-eeat-summary { padding: 12px 16px; background: #f6f7f7; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 4px; }
+.kw-eeat-summary:hover { background: #eef0f1; }
+.kw-eeat-details[open] .kw-eeat-summary { border-bottom: 1px solid #dcdcde; border-radius: 4px 4px 0 0; }
+.kw-eeat-summary-label { font-size: 14px; color: #1d2327; }
+.kw-eeat-summary-count { font-size: 12px; color: #50575e; padding: 2px 10px; background: #fff; border: 1px solid #dcdcde; border-radius: 11px; font-weight: 500; }
+.kw-eeat-summary-count.is-complete { background: #e6f4ea; color: #1e7d3a; border-color: #c2e7c8; }
+.kw-eeat-table { padding: 12px 16px; }
+.kw-eeat-table.form-table { margin-top: 0; }
+
+/* === YAML group details === */
+.kw-yaml-details-wrapper { margin-top: 12px; }
+.kw-yaml-details-wrapper[hidden] { display: none; }
+.kw-yaml-group { border: 1px solid #dcdcde; border-radius: 4px; margin-bottom: 10px; }
+.kw-yaml-group-summary { padding: 10px 14px; background: #f6f7f7; cursor: pointer; font-weight: 600; font-size: 13px; color: #1d2327; border-radius: 4px; }
+.kw-yaml-group-summary:hover { background: #eef0f1; }
+.kw-yaml-group[open] > .kw-yaml-group-summary { border-bottom: 1px solid #dcdcde; border-radius: 4px 4px 0 0; }
+.kw-yaml-group .form-table { margin-top: 0; padding: 8px 14px; }
+.kw-yaml-group .form-table th { width: 200px; }
+.kw-conditional[hidden] { display: none; }
+
+/* === Preset bar === */
+.kw-preset-bar { margin-top: 8px; padding: 8px 10px; background: #f6f7f7; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.kw-preset-label { font-size: 12px; color: #50575e; margin-right: 6px; font-weight: 500; }
+.kw-preset-btn { font-size: 11px !important; min-height: 24px !important; line-height: 22px !important; padding: 0 8px !important; }
+
+/* === Danger Zone === */
+.kw-danger-zone { margin-top: 30px; padding: 18px; border: 2px solid #d63638; border-radius: 6px; background: #fef7f7; }
+.kw-danger-zone-title { margin: 0 0 8px; color: #d63638; font-size: 1.1em; display: flex; align-items: center; gap: 6px; }
+.kw-danger-zone-title .dashicons { color: #d63638; }
+.kw-danger-desc { color: #50575e; font-size: 13px; margin: 0 0 14px; }
+.kw-danger-action { padding-top: 12px; border-top: 1px solid #f0c8c9; }
+.kw-danger-action:first-of-type { border-top: none; padding-top: 0; }
+.kw-danger-action-title { margin: 0 0 4px; font-size: 14px; color: #1d2327; }
+.kw-danger-action-desc { margin: 0 0 12px; font-size: 13px; color: #50575e; line-height: 1.5; }
+.kw-danger-confirm-row { margin: 8px 0 12px; padding: 10px 12px; background: #fff; border: 1px solid #f0c8c9; border-radius: 4px; }
+.kw-confirm-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #1d2327; cursor: pointer; }
+.kw-confirm-label input[type="checkbox"] { margin: 0; }
+.kw-danger-action-buttons { margin: 0; }
+
+.button-danger {
+    background: #d63638 !important;
+    border-color: #d63638 !important;
     color: #fff !important;
+    text-shadow: none !important;
+}
+.button-danger:hover:not(:disabled) { background: #b32d2e !important; border-color: #b32d2e !important; }
+.button-danger:disabled,
+.button-danger[disabled] {
+    background: #f0c8c9 !important;
+    border-color: #f0c8c9 !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
 }
 
-.file-actions .button-group .button.button-secondary {
-    border-color: #50575e !important;
-    background: #f6f7f7 !important;
-    color: #50575e !important;
+/* === Sticky save bar === */
+.kw-save-bar {
+    position: fixed;
+    bottom: 0;
+    left: 160px; /* WP admin sidebar width */
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #c3c4c7;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    padding: 10px 20px;
+    z-index: 100;
+}
+.kw-save-bar-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; gap: 16px; }
+.kw-unsaved-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #c5760a; font-weight: 500; }
+.kw-unsaved-indicator .dashicons { color: #c5760a; font-size: 16px; width: 16px; height: 16px; }
+.kw-save-bar-buttons { display: flex; gap: 8px; }
+.kw-save-bar-buttons .button-large { padding: 4px 24px; min-height: 36px; line-height: 1.5; font-size: 14px; }
+
+/* WP folded admin menu */
+.folded .kw-save-bar { left: 36px; }
+@media screen and (max-width: 782px) {
+    .kw-save-bar { left: 0; padding: 10px 12px; }
+    .auto-fold .kw-save-bar { left: 0; }
 }
 
-.file-actions .button-group .button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+/* === Inline messages === */
+.kw-inline-msg { display: inline-block; margin-left: 10px; font-size: 13px; }
+.kw-inline-msg.is-success { color: #1e7d3a; }
+.kw-inline-msg.is-error { color: #c5221f; }
+
+/* HTML5 hidden attribute must always win over display:* declarations.
+ * Scoped to .kw-llms-admin so it cannot affect other admin pages even though
+ * this CSS file is enqueued only on the plugin's own settings screen. */
+.kw-llms-admin [hidden] { display: none !important; }
+
+/* === Top notice area === */
+#kw-llms-notice-area .notice { margin: 0 0 12px; }
+
+/* === Responsive (narrow widths < 782px) === */
+@media screen and (max-width: 782px) {
+    .kw-tab-pane { padding: 16px 12px; }
+    .kw-tab-pane .form-table th { display: block; width: 100%; padding: 12px 0 4px; }
+    .kw-tab-pane .form-table td { display: block; width: 100%; padding: 0 0 8px; }
+    .kw-llms-tabs .nav-tab { font-size: 13px; padding: 8px 10px; }
+    .kw-llms-tabs .nav-tab .dashicons { display: none; }
+    .kw-dashboard-grid { grid-template-columns: 1fr; }
+    .kw-post-type-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .kw-eeat-summary { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
+
+/* === A11y focus === */
+.kw-tab-pane :focus { outline: 2px solid transparent; }
+.kw-tab-pane input:focus,
+.kw-tab-pane select:focus,
+.kw-tab-pane textarea:focus,
+.kw-tab-pane button:focus,
+.kw-tab-pane summary:focus { box-shadow: 0 0 0 2px #2271b1; outline: none; }
+.kw-post-type-item input[type="checkbox"]:focus { box-shadow: none; }
+.kw-post-type-item:focus-within { box-shadow: 0 0 0 2px #2271b1; }
