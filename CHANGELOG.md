@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-08-02
+
+### Added (新機能)
+- **追加セクション**: 任意の Markdown を `llms.txt` / `llms-full.txt` に差し込めるようになりました。投稿一覧には現れないが AI に伝えたい情報 (MCP エンドポイント、API、利用条件、問い合わせ方針など) の記載に使えます
+  - 挿入位置を「概要の直後」「コンテンツリストの後」から選択可能
+  - 最大 5000 文字。保存時に HTML タグを除去 (出力は text/plain の Markdown のため)
+  - 既定は OFF。本文が空のときも出力されません
+- フィルターフック `kashiwazaki_seo_llmstxt_custom_section` を追加 (追加セクションの Markdown を挿入直前に加工可能)
+
 ## [1.1.0] - 2026-05-08
 
 ### Added (新機能)

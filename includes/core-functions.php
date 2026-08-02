@@ -24,6 +24,10 @@ function kashiwazaki_seo_llmstxt_get_default_options() {
         // A-2: 概要版に 1 行要約 (default OFF、3者合意)
         'summary_inline_excerpt'  => false,
         'summary_excerpt_length'  => 70,
+        // 追加セクション: 任意の Markdown を llms.txt / llms-full.txt に挿入 (default OFF)
+        'enable_custom_section'   => false,
+        'custom_section_position' => 'after_header',
+        'custom_section_text'     => '',
         // A-1: E-E-A-T メタブロック (default OFF、3者合意)
         'enable_eeat_block' => false,
         'eeat_settings' => [
@@ -61,6 +65,11 @@ function kashiwazaki_seo_llmstxt_get_options() {
     // A-2 オプション
     $options['summary_inline_excerpt'] = isset($saved_options['summary_inline_excerpt']) ? (bool)$saved_options['summary_inline_excerpt'] : $default_options['summary_inline_excerpt'];
     $options['summary_excerpt_length'] = isset($saved_options['summary_excerpt_length']) ? max(20, min(200, intval($saved_options['summary_excerpt_length']))) : $default_options['summary_excerpt_length'];
+
+    // 追加セクション
+    $options['enable_custom_section'] = isset($saved_options['enable_custom_section']) ? (bool)$saved_options['enable_custom_section'] : $default_options['enable_custom_section'];
+    $options['custom_section_position'] = isset($saved_options['custom_section_position']) ? (string)$saved_options['custom_section_position'] : $default_options['custom_section_position'];
+    $options['custom_section_text'] = isset($saved_options['custom_section_text']) ? (string)$saved_options['custom_section_text'] : $default_options['custom_section_text'];
 
     // A-1 オプション
     $options['enable_eeat_block'] = isset($saved_options['enable_eeat_block']) ? (bool)$saved_options['enable_eeat_block'] : $default_options['enable_eeat_block'];
@@ -316,6 +325,57 @@ function kashiwazaki_seo_llmstxt_render_eeat_block( $options ) {
      * @since 1.0.7
      */
     return apply_filters( 'kashiwazaki_seo_llmstxt_eeat_block', $block, $eeat, $options );
+}
+
+/**
+ * 追加セクションの挿入位置を返す。
+ *
+ * 想定外の値が保存されていた場合は既定の 'after_header' に倒す。
+ *
+ * @since 1.1.1
+ * @param array $options プラグイン設定。
+ * @return string 'after_header' または 'before_footer'。
+ */
+function kashiwazaki_seo_llmstxt_custom_section_position( $options ) {
+    $position = isset( $options['custom_section_position'] ) ? (string) $options['custom_section_position'] : 'after_header';
+    return in_array( $position, [ 'after_header', 'before_footer' ], true ) ? $position : 'after_header';
+}
+
+/**
+ * 追加セクションをレンダする。
+ *
+ * 設定画面で入力された任意の Markdown を、そのまま llms.txt / llms-full.txt に
+ * 差し込む。用途は「プラグインが自動生成しない情報」を載せること (MCP エンドポイント、
+ * API、問い合わせ方針、利用条件など)。保存時に HTML タグは除去済みで、
+ * ここでは改行を正規化するだけに留める。
+ *
+ * @since 1.1.1
+ * @param array $options プラグイン設定。
+ * @param bool  $full    true なら llms-full.txt。
+ * @return string 追記する Markdown。無効時は空文字。
+ */
+function kashiwazaki_seo_llmstxt_render_custom_section( $options, $full = false ) {
+    $block = '';
+
+    if ( ! empty( $options['enable_custom_section'] ) ) {
+        $text = isset( $options['custom_section_text'] ) ? (string) $options['custom_section_text'] : '';
+        $text = trim( str_replace( [ "\r\n", "\r" ], "\n", $text ) );
+
+        if ( $text !== '' ) {
+            // 前後のセクションと必ず 1 行空ける。
+            $block = $text . "\n\n";
+        }
+    }
+
+    /**
+     * Filter the custom section Markdown before insertion.
+     *
+     * @since 1.1.1
+     * @param string $block   追加セクションの Markdown (無効時は空文字)。
+     * @param array  $options プラグイン設定。
+     * @param bool   $full    true for llms-full.txt.
+     */
+    return apply_filters( 'kashiwazaki_seo_llmstxt_custom_section', $block, $options, $full );
 }
 
 /**
@@ -575,6 +635,11 @@ function kashiwazaki_seo_generate_llms_content( $full = false ) {
         $output .= $after_header;
     }
 
+    // 2-b. 追加セクション (概要の直後に配置する場合)
+    if ( kashiwazaki_seo_llmstxt_custom_section_position( $options ) === 'after_header' ) {
+        $output .= kashiwazaki_seo_llmstxt_render_custom_section( $options, $full );
+    }
+
     // 3. ## コンテンツリスト
     // F6 (full-audit-r2): runtime 側でも 1〜10000 で clamp
     $posts_per_page = max(1, min(10000, intval($options['posts_per_page'])));
@@ -592,6 +657,11 @@ function kashiwazaki_seo_generate_llms_content( $full = false ) {
 
     if ( !$has_content ) {
         $output .= "指定された条件に一致する公開済みコンテンツは見つかりませんでした。\n";
+    }
+
+    // 3-b. 追加セクション (コンテンツリストの後に配置する場合)
+    if ( kashiwazaki_seo_llmstxt_custom_section_position( $options ) === 'before_footer' ) {
+        $output .= "\n" . kashiwazaki_seo_llmstxt_render_custom_section( $options, $full );
     }
 
     // 4. YAML footer

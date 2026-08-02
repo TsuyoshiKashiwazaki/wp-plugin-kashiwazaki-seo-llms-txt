@@ -12,7 +12,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <h2 style="color:#fff;">LLMs.txt Generator</h2>
-        <span class="version">v1.1.0</span>
+        <span class="version">v1.1.1</span>
         <img src="images/main-visual.png" alt="" style="width:100%;border-radius:4px;margin-top:8px;">
     </div>
     <ul>
@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td><strong>コンテンツ設定</strong></td>
-                <td>llms.txt に何を含めるか（投稿タイプ、件数、概要版 1 行要約、制作者情報フッター）</td>
+                <td>llms.txt に何を含めるか（投稿タイプ、件数、概要版 1 行要約、制作者情報フッター、追加セクション）</td>
             </tr>
             <tr>
                 <td><strong>運営者情報</strong></td>
@@ -80,7 +80,7 @@
 
     <figure class="screenshot">
         <img src="images/screenshots/04-tab-content.png" alt="コンテンツ設定タブ" class="lightbox-trigger">
-        <figcaption>コンテンツ設定タブ — 投稿タイプ 3 列 grid + 概要版 1 行要約 + 制作者情報</figcaption>
+        <figcaption>コンテンツ設定タブ — 投稿タイプ 3 列 grid + 概要版 1 行要約 + 制作者情報 + 追加セクション</figcaption>
     </figure>
 
     <h3>投稿タイプの選択</h3>
@@ -101,6 +101,62 @@
 
     <h3>制作者情報フッター</h3>
     <p>生成ファイルの末尾にプラグイン制作者情報を表示するかどうか。デフォルトは ON です。</p>
+
+    <h3>追加セクション（v1.1.1 新機能）</h3>
+    <p>
+        任意の Markdown を <code>llms.txt</code> / <code>llms-full.txt</code> に差し込めます。
+        このプラグインは投稿・固定ページの一覧を自動生成しますが、
+        <strong>投稿として存在しない情報</strong>は当然そこに現れません。
+        MCP エンドポイント、公開 API、利用条件、問い合わせ方針などがそれにあたります。
+        追加セクションはその穴を埋めるための欄です。
+    </p>
+
+    <table>
+        <thead>
+            <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>追加セクションを出力する</td>
+                <td>ON で有効。デフォルトは OFF。本文が空のときは ON でも何も出力されません。</td>
+            </tr>
+            <tr>
+                <td>挿入位置</td>
+                <td>
+                    <strong>概要の直後</strong>（コンテンツリストより前）か、
+                    <strong>コンテンツリストの後</strong>（フッターより前）を選択。
+                    重要な情報ほど前に置くと AI に読まれやすくなります。
+                </td>
+            </tr>
+            <tr>
+                <td>本文（Markdown）</td>
+                <td>
+                    最大 5000 文字。見出しは <code>##</code> から始めると他のセクションと揃います。
+                    HTML タグは保存時に除去されます（出力は text/plain の Markdown のため）。
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">公開出力に含まれます</div>
+        <p>入力した内容は誰でも閲覧できます。非公開情報は書かないでください。</p>
+    </div>
+
+    <h4>記入例</h4>
+    <pre><code>## AI連携（MCP）
+
+当サイトの公開情報は、MCP 対応 AI から直接検索・取得できます。
+
+- エンドポイント: https://mcp.example.com/
+- 認証: 不要 / 読み取り専用
+- 接続: codex mcp add example --url https://mcp.example.com/</code></pre>
+
+    <h4>フィルターフック</h4>
+    <p>
+        出力直前に加工したい場合は <code>kashiwazaki_seo_llmstxt_custom_section</code> を使います。
+        引数は <code>$block</code>（Markdown）、<code>$options</code>（設定）、<code>$full</code>（llms-full.txt なら true）。
+    </p>
 
     <h2>3. 運営者情報タブ（E-E-A-T）</h2>
 
@@ -241,7 +297,7 @@
 
     <footer class="manual-footer">
         <p>作者: <a href="https://www.tsuyoshikashiwazaki.jp/profile/" target="_blank" rel="noopener">柏崎剛（Tsuyoshi Kashiwazaki）</a></p>
-        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.1.0</p>
+        <p>プラグイン: Kashiwazaki SEO LLMs.txt Generator v1.1.1</p>
     </footer>
 </main>
 

@@ -23,6 +23,12 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
     // A-2: 概要版オプション
     $options['summary_inline_excerpt'] = isset($saved_options['summary_inline_excerpt']) ? (bool)$saved_options['summary_inline_excerpt'] : $default_options['summary_inline_excerpt'];
     $options['summary_excerpt_length'] = isset($saved_options['summary_excerpt_length']) ? max(20, min(200, intval($saved_options['summary_excerpt_length']))) : $default_options['summary_excerpt_length'];
+    // 追加セクション
+    $options['enable_custom_section'] = isset($saved_options['enable_custom_section']) ? (bool)$saved_options['enable_custom_section'] : $default_options['enable_custom_section'];
+    $options['custom_section_position'] = isset($saved_options['custom_section_position']) && in_array($saved_options['custom_section_position'], ['after_header', 'before_footer'], true)
+        ? $saved_options['custom_section_position']
+        : $default_options['custom_section_position'];
+    $options['custom_section_text'] = isset($saved_options['custom_section_text']) ? (string)$saved_options['custom_section_text'] : $default_options['custom_section_text'];
     // A-1: E-E-A-T オプション
     $options['enable_eeat_block'] = isset($saved_options['enable_eeat_block']) ? (bool)$saved_options['enable_eeat_block'] : $default_options['enable_eeat_block'];
     $options['eeat_settings'] = isset($saved_options['eeat_settings']) && is_array($saved_options['eeat_settings'])
@@ -190,6 +196,22 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
                 ? max(20, min(200, intval($_POST['summary_excerpt_length'])))
                 : $default_options['summary_excerpt_length'];
 
+            // 追加セクション
+            $new_enable_custom_section = isset($_POST['enable_custom_section']);
+            $new_custom_section_position = isset($_POST['custom_section_position']) && in_array($_POST['custom_section_position'], ['after_header', 'before_footer'], true)
+                ? sanitize_key( wp_unslash( $_POST['custom_section_position'] ) )
+                : $default_options['custom_section_position'];
+            // sanitize_textarea_field は HTML タグを除去しつつ改行を保持する。
+            // 出力先は text/plain の Markdown なのでこれで十分。
+            $new_custom_section_text = '';
+            if ( isset( $_POST['custom_section_text'] ) ) {
+                $custom_raw = sanitize_textarea_field( wp_unslash( $_POST['custom_section_text'] ) );
+                // 上限 5000 文字。llms.txt は索引であって本文置き場ではないため。
+                $new_custom_section_text = mb_strlen( $custom_raw, 'UTF-8' ) > 5000
+                    ? mb_substr( $custom_raw, 0, 5000, 'UTF-8' )
+                    : $custom_raw;
+            }
+
             // A-1: E-E-A-T オプション
             $new_enable_eeat_block = isset($_POST['enable_eeat_block']);
             $eeat_input = isset($_POST['eeat_settings']) && is_array($_POST['eeat_settings'])
@@ -233,6 +255,9 @@ function kashiwazaki_seo_llmstxt_render_settings_page() {
                 'cache_duration' => $new_cache_duration,
                 'summary_inline_excerpt' => $new_summary_inline_excerpt,
                 'summary_excerpt_length' => $new_summary_excerpt_length,
+                'enable_custom_section' => $new_enable_custom_section,
+                'custom_section_position' => $new_custom_section_position,
+                'custom_section_text' => $new_custom_section_text,
                 'enable_eeat_block' => $new_enable_eeat_block,
                 'eeat_settings' => $sanitized_eeat,
             ];

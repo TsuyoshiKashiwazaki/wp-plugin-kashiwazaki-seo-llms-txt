@@ -4,7 +4,7 @@ Tags: seo, llm, ai, crawler, txt
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,11 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 
 == Changelog ==
 
+= 1.1.1 =
+* **新機能:** 追加セクション — 任意の Markdown を llms.txt / llms-full.txt に差し込み可能 (MCP エンドポイント、API、利用条件などの記載に)
+* **新機能:** 追加セクションの挿入位置を「概要の直後」「コンテンツリストの後」から選択可能
+* **新機能:** フィルターフック `kashiwazaki_seo_llmstxt_custom_section` を追加
+
 = 1.1.0 =
 * **新機能:** 管理画面を 5 タブ構成に再編 (ダッシュボード / コンテンツ設定 / 運営者情報 / AI クローラー設定 / 高度な設定)
 * **新機能:** ダッシュボードに生成状態バッジ・キャッシュ残時間・プレビュー URL を表示
@@ -161,6 +166,9 @@ AIクローラー向けに llms.txt（概要版）と llms-full.txt（詳細版�
 * 日本語完全対応
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+任意の Markdown を llms.txt に追記できる「追加セクション」を追加しました。既定は OFF のため、既存の出力は変わりません。
 
 = 1.1.0 =
 管理画面が 5 タブ構成に再編されました。E-E-A-T ブロック・概要版要約・Conditional GET 等の新機能を追加し、12 件のバグ・セキュリティ修正を適用。アクセシビリティとレスポンシブも大幅改善。POST 互換性は 100% 維持されているため設定値は引き継がれます。

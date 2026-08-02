@@ -251,6 +251,54 @@ $disallow_presets = ['/wp-admin/','/wp-login.php','/wp-json/','/?s=','/feed/','/
                     </tr>
                 </tbody>
             </table>
+
+            <h3 class="kw-section-h3">追加セクション</h3>
+            <p class="description">
+                プラグインが自動生成しない情報を、任意の Markdown として生成ファイルに追記できます。
+                MCP エンドポイント・API・利用条件・問い合わせ方針など、投稿一覧には現れないが
+                AI に伝えたい情報の記載に使えます。
+            </p>
+
+            <div class="notice notice-warning inline kw-public-warning">
+                <p><strong>公開出力に含まれます:</strong> 入力内容は <code>llms.txt</code> および <code>llms-full.txt</code> として誰でも閲覧可能になります。</p>
+            </div>
+
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row">追加セクション</th>
+                        <td>
+                            <fieldset>
+                                <label for="enable_custom_section">
+                                    <input type="checkbox" name="enable_custom_section" id="enable_custom_section" value="1" <?php checked( ! empty( $options['enable_custom_section'] ) ); ?> aria-describedby="enable_custom_section-desc" />
+                                    追加セクションを出力する
+                                </label>
+                                <p class="description" id="enable_custom_section-desc">OFF のとき、または本文が空のときは何も出力されません (デフォルト: OFF)。</p>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="custom_section_position">挿入位置</label></th>
+                        <td>
+                            <select name="custom_section_position" id="custom_section_position" aria-describedby="custom_section_position-desc">
+                                <option value="after_header" <?php selected( ( $options['custom_section_position'] ?? 'after_header' ), 'after_header' ); ?>>概要の直後 (コンテンツリストより前)</option>
+                                <option value="before_footer" <?php selected( ( $options['custom_section_position'] ?? 'after_header' ), 'before_footer' ); ?>>コンテンツリストの後 (フッターより前)</option>
+                            </select>
+                            <p class="description" id="custom_section_position-desc">重要な情報ほど前に置くと AI に読まれやすくなります。</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="custom_section_text">本文 (Markdown)</label></th>
+                        <td>
+                            <textarea name="custom_section_text" id="custom_section_text" rows="10" class="large-text code" aria-describedby="custom_section_text-desc" placeholder="## お問い合わせ&#10;&#10;- メール: info@example.com&#10;- フォーム: https://example.com/contact/"><?php echo esc_textarea( $options['custom_section_text'] ?? '' ); ?></textarea>
+                            <p class="description" id="custom_section_text-desc">
+                                最大 5000 文字。見出しは <code>##</code> から始めると他のセクションと揃います。
+                                HTML タグは保存時に除去されます (出力は text/plain の Markdown のため)。
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- ============ TAB 3: 運営者情報 ============ -->
